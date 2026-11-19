@@ -1601,7 +1601,8 @@
                 body: `Apakah Anda yakin ingin menghapus akun Guru ${t.name} (${t.username}) secara permanen?`,
                 confirmText: 'Ya, Hapus Permanen',
                 confirmColor: 'red',
-                onConfirm: () => {
+                onConfirm: async () => {
+                    // 1. Hapus dari memori lokal
                     usersList = usersList.filter(u => u.id !== teacherId);
                     saveUsersStore();
 
@@ -1615,6 +1616,18 @@
                     proctorArchives = proctorArchives.filter(a => a.teacherId !== teacherId);
                     saveProctorArchives();
 
+                    // 2. Hapus secara permanen dari server database Supabase Cloud
+                    if (supabaseClient) {
+                        try {
+                            await supabaseClient.from('app_users').delete().eq('id', teacherId);
+                            await supabaseClient.from('app_docs_by_user').delete().eq('user_id', teacherId);
+                            console.log('Data akun berhasil dihapus dari cloud Supabase.');
+                        } catch (err) {
+                            console.error('Gagal menghapus data dari Supabase:', err);
+                        }
+                    }
+
+                    // 3. Render ulang tampilan
                     renderTeachersList();
                     renderProctorArchiveList();
                     showToast(`Akun Guru "${t.name}" berhasil dihapus permanen.`, 'info');
