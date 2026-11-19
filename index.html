@@ -3289,6 +3289,17 @@
         window.addEventListener('DOMContentLoaded', () => {
             pullFromSupabase(true);
             setInterval(() => pullFromSupabase(false), 7000);
+	// Tambahkan listener Realtime Supabase agar data otomatis sinkron saat ada perubahan di database
+if (supabaseClient) {
+    supabaseClient
+        .channel('public-db-changes')
+        .on('postgres_changes', { event: '*', schema: 'public' }, (payload) => {
+            console.log('Perubahan terdeteksi dari database:', payload);
+            // Tarik data terbaru secara otomatis saat ada perubahan masuk
+            pullFromSupabase(false);
+        })
+        .subscribe();
+}
         });
     </script>
 </body>
