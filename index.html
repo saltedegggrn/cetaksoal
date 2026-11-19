@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+<!-- SDK Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -128,7 +130,7 @@
     <div id="toast-container" class="no-print fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
 
     <!-- MODAL KONFIRMASI KUSTOM -->
-    <div id="confirm-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+    <div id="confirm-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 space-y-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
@@ -148,7 +150,7 @@
     </div>
 
     <!-- MODAL BUAT FOLDER NASKAH BARU (KHUSUS GURU) -->
-    <div id="new-folder-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+    <div id="new-folder-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
             <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
                 <h3 class="text-sm font-bold flex items-center gap-2">
@@ -193,7 +195,7 @@
     </div>
 
     <!-- MODAL EDIT / RESET PASSWORD AKUN GURU (KHUSUS PROKTOR) -->
-    <div id="edit-teacher-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+    <div id="edit-teacher-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
             <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
                 <h3 class="text-sm font-bold flex items-center gap-2">
@@ -379,7 +381,7 @@
             <div class="bg-slate-800/95 border-t border-slate-700/80">
                 <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap gap-2">
                     <button type="button" id="proctor-nav-archive" onclick="switchProctorViewTab('archive')"
-                        class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-xs">
+                        class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-sm">
                         <i data-lucide="printer" class="w-4 h-4"></i>
                         <span>Arsip Naskah Soal dari Guru (<span id="proctor-nav-archive-count">0</span>)</span>
                     </button>
@@ -394,7 +396,7 @@
 
         <!-- TAB PROKTOR 1: ARSIP LEMBAR SOAL GURU (READ-ONLY SIAP CETAK / PDF / TARIK KE DRAF) -->
         <div id="proctor-tab-archive" class="flex-grow max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12">
-            <!-- Daftar Naskah Terkirim di Kiri (Tidak ikut tercetak) -->
+            <!-- Daftar Naskah Terkirim di Kiri -->
             <aside class="no-print lg:col-span-4 xl:col-span-3 bg-white border-r border-slate-300 p-4 sm:p-5 space-y-4 lg:h-[calc(100vh-7.2rem)] lg:overflow-y-auto">
                 <div>
                     <h2 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
@@ -437,7 +439,7 @@
                 <div id="proctor-archive-list" class="space-y-2.5"></div>
             </aside>
 
-            <!-- Pratinjau Kertas A4/F4 di Kanan (Tercetak bersih saat Print) -->
+            <!-- Pratinjau Kertas A4/F4 di Kanan -->
             <section id="proctor-preview-pane" class="lg:col-span-8 xl:col-span-9 p-4 sm:p-8 lg:h-[calc(100vh-7.2rem)] lg:overflow-y-auto flex flex-col items-center">
                 <div class="no-print max-w-[215mm] w-full mb-4 bg-white/95 border border-slate-300 rounded-2xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div class="flex items-center gap-2 font-semibold text-slate-700">
@@ -489,7 +491,7 @@
                                 <div>
                                     <label class="block text-xs font-bold text-slate-600 mb-1">Password Login *</label>
                                     <div class="flex gap-1.5">
-                                        <input type="text" id="new-teacher-pass" required value="123" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm font-mono font-bold text-blue-700">
+                                        <input type="text" id="new-teacher-pass" required value="123" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-mono font-bold text-blue-700">
                                         <button type="button" onclick="generateRandomTeacherPass()" class="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold border border-slate-300" title="Acak Password">Acak</button>
                                     </div>
                                 </div>
@@ -683,56 +685,6 @@
                             <input type="text" id="meta-folder-name" oninput="updateMetaAndRender()" placeholder="Contoh: Seni Rupa - Kelas 9" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-blue-900 bg-blue-50/40 focus:bg-white">
                         </div>
 
-                        <!-- GAMBAR KOP SURAT RESMI (BANNER HEADER ATAS) -->
-                        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
-                            <div class="flex items-center justify-between gap-2">
-                                <span class="text-[11px] font-extrabold text-emerald-950 flex items-center gap-1.5">
-                                    <i data-lucide="image" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                    <span>Gambar Kop Surat (Banner Header Atas)</span>
-                                </span>
-                                <label class="cursor-pointer px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold flex items-center gap-1 shadow-xs">
-                                    <i data-lucide="upload" class="w-3 h-3"></i>
-                                    <span>Upload Kop</span>
-                                    <input type="file" accept="image/*" class="hidden" onchange="handleKopImageUpload(event)">
-                                </label>
-                            </div>
-
-                            <div class="flex gap-1.5">
-                                <input type="text" id="meta-kop-image" oninput="updateKopFromUrlInput()" placeholder="Unggah file kop surat atau tempel URL gambar..." class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white">
-                                <button type="button" onclick="clearKopImage()" class="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-rose-100 text-slate-700 hover:text-rose-700 text-xs font-bold">Hapus</button>
-                            </div>
-
-                            <div id="meta-kop-preview-box" class="hidden space-y-2.5 pt-1">
-                                <div class="p-1.5 bg-white rounded-lg border border-emerald-200 flex justify-center">
-                                    <img id="meta-kop-preview-img" src="" alt="Pratinjau Kop Surat" class="max-h-24 w-auto object-contain">
-                                </div>
-
-                                <div class="space-y-1">
-                                    <div class="flex items-center justify-between text-[11px] font-bold text-slate-700">
-                                        <span>Tinggi Maksimal Kop Surat:</span>
-                                        <span id="meta-kop-height-label" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-emerald-800 font-mono">135px</span>
-                                    </div>
-                                    <input type="range" id="meta-kop-height" min="60" max="260" step="5" value="135" oninput="updateMetaAndRender()" class="w-full accent-emerald-600 cursor-pointer">
-                                </div>
-
-                                <div class="space-y-1.5">
-                                    <label class="flex items-center gap-2 cursor-pointer text-[11px] font-semibold text-slate-700">
-                                        <input type="checkbox" id="meta-kop-fullwidth" checked onchange="updateMetaAndRender()" class="w-3.5 h-3.5 rounded accent-emerald-600">
-                                        <span>Lebar Penuh Kertas (100%)</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 cursor-pointer text-[11px] font-semibold text-slate-700">
-                                        <input type="checkbox" id="meta-kop-doubleborder" onchange="updateMetaAndRender()" class="w-3.5 h-3.5 rounded accent-emerald-600">
-                                        <span>Tambahkan Garis Ganda Pemisah di Bawah Kop</span>
-                                    </label>
-                                </div>
-
-                                <button type="button" onclick="applyKopToAllMyFolders()" class="w-full py-1.5 px-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold flex items-center justify-center gap-1.5">
-                                    <i data-lucide="copy-check" class="w-3.5 h-3.5"></i>
-                                    <span>Terapkan Kop Ini ke Semua Folder Saya</span>
-                                </button>
-                            </div>
-                        </div>
-
                         <div>
                             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Judul Baris 1</label>
                             <input type="text" id="meta-line1" oninput="updateMetaAndRender()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold bg-white">
@@ -847,7 +799,7 @@
                 </section>
 
                 <!-- 4. FORM TAMBAH / EDIT BUTIR SOAL -->
-                <section class="bg-white rounded-2xl border-2 border-blue-200 p-4 shadow-xs space-y-3.5">
+                <section class="bg-white rounded-2xl border-2 border-blue-200 p-4 shadow-sm space-y-3.5">
                     <div class="flex items-center justify-between">
                         <h2 id="q-form-heading" class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
                             <i data-lucide="plus-circle" class="w-4 h-4 text-blue-600"></i>
@@ -947,7 +899,7 @@
             <section id="preview-pane" class="lg:col-span-7 xl:col-span-8 p-4 sm:p-8 lg:h-[calc(100vh-4rem)] lg:overflow-y-auto flex flex-col items-center">
 
                 <!-- INFO BAR PRATINJAU -->
-                <div class="no-print max-w-[215mm] w-full mb-4 bg-white/90 backdrop-blur-xs border border-slate-300 rounded-2xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-xs">
+                <div class="no-print max-w-[215mm] w-full mb-4 bg-white/90 backdrop-blur-sm border border-slate-300 rounded-2xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
                     <div class="flex items-center gap-2 text-slate-700 font-semibold">
                         <i data-lucide="file-check-2" class="w-4 h-4 text-emerald-600"></i>
                         <span>Pratinjau Dokumen Siap Cetak (<strong id="preview-paper-label">Kertas A4 • 12pt</strong>)</span>
@@ -1005,9 +957,9 @@
         };
 
         const STORAGE_KEYS = {
-            USERS: 'cetaksoal_pro_v4_users',
-            DOCS_BY_USER: 'cetaksoal_pro_v4_docs_by_user',
-            PROCTOR_ARCHIVES: 'cetaksoal_pro_v4_proctor_archives'
+            USERS: 'cetaksoal_pro_v5_users',
+            DOCS_BY_USER: 'cetaksoal_pro_v5_docs_by_user',
+            PROCTOR_ARCHIVES: 'cetaksoal_pro_v5_proctor_archives'
         };
 
         const ROMAN_NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
@@ -1025,7 +977,7 @@
         let syncChannel = null;
         try {
             if ('BroadcastChannel' in window) {
-                syncChannel = new BroadcastChannel('cetaksoal_pro_v4_channel');
+                syncChannel = new BroadcastChannel('cetaksoal_pro_v5_channel');
             }
         } catch (e) {
             syncChannel = null;
@@ -1041,15 +993,12 @@
 
         function createEmptySheetData(folderName, subjectName, className) {
             return {
+                id: 'doc-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
                 folderName: folderName || `${subjectName || 'Mata Pelajaran'} - Kelas ${className || '9'}`,
                 submissionStatus: 'DRAFT',
                 revisionCount: 0,
                 submittedAt: '',
                 meta: {
-                    kopImage: '',
-                    kopHeight: 135,
-                    kopFullWidth: true,
-                    kopDoubleBorder: false,
                     line1: 'LEMBAR SOAL',
                     line2: 'SUMATIF AKHIR SEMESTER (SAT)',
                     line3: 'Tahun Ajaran 2026/2027',
@@ -1078,16 +1027,19 @@
         }
 
         function createSampleSheetData(folderName = 'Seni Rupa - Kelas 9', subjectName = 'SENI RUPA', className = '9') {
+            const ts = Date.now();
+            const sec1 = `sec-${ts}-1`;
+            const sec2 = `sec-${ts}-2`;
+            const sec3 = `sec-${ts}-3`;
+            const sec4 = `sec-${ts}-4`;
+
             return {
+                id: 'doc-' + ts + '-' + Math.floor(Math.random() * 1000),
                 folderName,
                 submissionStatus: 'DRAFT',
                 revisionCount: 0,
                 submittedAt: '',
                 meta: {
-                    kopImage: '',
-                    kopHeight: 135,
-                    kopFullWidth: true,
-                    kopDoubleBorder: false,
                     line1: 'LEMBAR SOAL',
                     line2: 'SUMATIF AKHIR SEMESTER (SAT)',
                     line3: 'Tahun Ajaran 2026/2027',
@@ -1107,128 +1059,137 @@
                 },
                 sections: [
                     {
-                        id: 'sec-1',
+                        id: sec1,
                         instruction: 'Pilihlah salah satu jawaban yang paling tepat dengan memberi tanda silang (X) pada huruf A, B, C, atau D!'
                     },
                     {
-                        id: 'sec-2',
-                        instruction: 'Pilihlah lebih dari satu jawaban yang benar dengan memberi tanda centang (✓) pada kotak di depan pilihan jawaban!'
+                        id: sec2,
+                        instruction: 'Pilihlah lebih dari satu jawaban yang benar dengan memberi tanda centang (√) pada kotak yang tersedia!'
                     },
                     {
-                        id: 'sec-3',
-                        instruction: 'Pilihlah satu jawaban yang tepat pada setiap baris dengan memberikan tanda centang (✓) pada kolom yang sesuai. (Menjodohkan)'
+                        id: sec3,
+                        instruction: 'Pilihlah satu jawaban yang tepat pada setiap baris dengan memberikan tanda centang (√) pada kolom yang sesuai!'
                     },
                     {
-                        id: 'sec-4',
+                        id: sec4,
                         instruction: 'Jawablah pertanyaan-pertanyaan berikut ini dengan jelas dan benar!'
                     }
                 ],
                 questions: [
                     {
-                        id: 'q-sample-1',
-                        sectionId: 'sec-1',
+                        id: `q-${ts}-1`,
+                        sectionId: sec1,
                         type: 'multiple_choice',
-                        text: 'Aliran seni lukis yang berusaha menggambarkan objek sesuai dengan kenyataan alam tanpa menambah atau mengurangi disebut aliran ....',
+                        text: 'Unsur paling dasar dalam seni rupa dua dimensi yang terbentuk dari hubungan beberapa titik adalah ....',
                         image: '',
-                        options: ['Naturalisme', 'Ekspresionisme', 'Kubisme', 'Surealisme'],
+                        options: ['Garis', 'Bidang', 'Tekstur', 'Gelap terang'],
                         optionImages: ['', '', '', ''],
                         correctIndex: 0,
-                        explanation: 'Naturalisme menampilkan keindahan alam secara apa adanya sesuai penglihatan mata.'
+                        explanation: 'Garis merupakan goresan atau batas limit dari suatu benda, ruang, bidang, dan warna.'
                     },
                     {
-                        id: 'q-sample-2',
-                        sectionId: 'sec-2',
-                        type: 'complex_mc',
-                        text: 'Perhatikan unsur-unsur berikut! Manakah yang termasuk unsur-unsur fisik dalam karya seni rupa dua dimensi?',
+                        id: `q-${ts}-2`,
+                        sectionId: sec1,
+                        type: 'multiple_choice',
+                        text: 'Prinsip seni rupa yang berkaitan dengan keselarasan perbandingan ukuran antar bagian benda agar terlihat proporsional disebut ....',
                         image: '',
-                        options: ['Garis dan Bidang', 'Tekstur dan Warna', 'Irama dan Kesatuan', 'Gelap Terang (Value)'],
+                        options: ['Komposisi', 'Proporsi', 'Keseimbangan', 'Kesatuan'],
+                        optionImages: ['', '', '', ''],
+                        correctIndex: 1,
+                        explanation: 'Proporsi mengatur perbandingan ukuran bagian satu dengan bagian lainnya secara ideal.'
+                    },
+                    {
+                        id: `q-${ts}-3`,
+                        sectionId: sec2,
+                        type: 'complex_mc',
+                        text: 'Manakah di antara berikut ini yang termasuk ke dalam warna primer dalam teori warna pigmen? (Pilih 3 jawaban benar)',
+                        image: '',
+                        options: ['Merah', 'Kuning', 'Hijau', 'Biru'],
                         optionImages: ['', '', '', ''],
                         correctIndices: [0, 1, 3],
-                        explanation: 'Garis, bidang, tekstur, warna, dan gelap terang merupakan unsur fisik seni rupa.'
+                        explanation: 'Warna primer pigmen terdiri atas Merah, Kuning, dan Biru.'
                     },
                     {
-                        id: 'q-sample-3',
-                        sectionId: 'sec-3',
+                        id: `q-${ts}-4`,
+                        sectionId: sec3,
                         type: 'matching',
                         text: 'Jodohkan Unsur Seni Rupa dengan Perannya dalam Menggambar Alam Benda!',
                         image: '',
                         leftHeader: 'Unsur Seni Rupa',
-                        rightHeaders: [
+                        colHeaders: [
                             'Memberikan kesan volume, kedalaman, dan efek tiga dimensi pada objek',
                             'Mengatur keselarasan perbandingan ukuran antar bagian benda agar terlihat ideal',
                             'Memberikan kesan sifat permukaan benda saat dilihat atau diraba (seperti halus, kasar, atau licin)'
                         ],
-                        matchingRows: [
-                            { leftText: 'Gelap Terang (Arsir)', correctColIndex: 0 },
-                            { leftText: 'Proporsi', correctColIndex: 1 },
-                            { leftText: 'Tekstur', correctColIndex: 2 }
+                        rows: [
+                            { left: 'Gelap Terang (Arsir)', correctCol: 0 },
+                            { left: 'Proporsi', correctCol: 1 },
+                            { left: 'Tekstur', correctCol: 2 }
                         ],
-                        explanation: 'Gelap terang menciptakan volume 3D, proporsi mengatur perbandingan ukuran, dan tekstur menampilkan sifat permukaan.'
+                        explanation: 'Gelap terang membentuk volume 3D; Proporsi mengatur perbandingan ukuran; Tekstur menunjukkan nilai raba permukaan.'
                     },
                     {
-                        id: 'q-sample-4',
-                        sectionId: 'sec-4',
+                        id: `q-${ts}-5`,
+                        sectionId: sec4,
                         type: 'essay',
-                        text: 'Jelaskan perbedaan mendasar antara seni lukis beraliran Realisme dengan Ekspresionisme!',
+                        text: 'Jelaskan perbedaan antara teknik arsir dan teknik dusel dalam menggambar bentuk!',
                         image: '',
                         essayLines: 3,
-                        sampleAnswer: 'Realisme menggambarkan kehidupan sehari-hari secara objektif apa adanya, sedangkan Ekspresionisme mengutamakan curahan perasaan batin dan emosi seniman secara subjektif.',
-                        explanation: ''
+                        explanation: 'Teknik arsir menggunakan garis sejajar/menyilang, sedangkan teknik dusel menggosok goresan pensil untuk gradasi halus.'
                     }
                 ]
             };
         }
 
-        // STATE GLOBAL
+        // STATE GLOBAL APLIKASI
         let usersList = [];
         let currentUser = null;
         let guruDocuments = [];
         let activeGuruDocId = null;
         let appState = null;
-
         let proctorArchives = [];
         let selectedProctorArchiveId = null;
-        let proctorShowKey = false;
+        let proctorPreviewKeyMode = false;
 
+        // Draft builder untuk opsi PG / PGK & Baris/Kolom Menjodohkan / Benar-Salah
         let draftOptions = [
             { text: '', image: '', isCorrect: true },
             { text: '', image: '', isCorrect: false },
             { text: '', image: '', isCorrect: false },
             { text: '', image: '', isCorrect: false }
         ];
-        let draftTfStatements = [
-            { text: '', isTrue: true },
-            { text: '', isTrue: false },
-            { text: '', isTrue: true }
+        let draftTfRows = [
+            { statement: '', isTrue: true },
+            { statement: '', isTrue: false }
         ];
-        let draftMatchingLeftHeader = 'Unsur Seni Rupa';
-        let draftMatchingRightHeaders = [
+        let draftMatchCols = [
             'Deskripsi pasangan kolom 1',
             'Deskripsi pasangan kolom 2',
             'Deskripsi pasangan kolom 3'
         ];
-        let draftMatchingRows = [
-            { leftText: '', correctColIndex: 0 },
-            { leftText: '', correctColIndex: 1 },
-            { leftText: '', correctColIndex: 2 }
+        let draftMatchRows = [
+            { left: '', correctCol: 0 },
+            { left: '', correctCol: 1 },
+            { left: '', correctCol: 2 }
         ];
 
         // =====================================================================
-        // 1. AUTENTIKASI & MANAJEMEN AKUN STAF
+        // 1. AUTENTIKASI & MANAJEMEN AKUN STAF (PROKTOR & GURU)
         // =====================================================================
         function initUsersStore() {
             try {
                 const raw = safeStorage.getItem(STORAGE_KEYS.USERS);
-                usersList = raw ? JSON.parse(raw) : [JSON.parse(JSON.stringify(MASTER_PROCTOR))];
+                usersList = raw ? JSON.parse(raw) : [];
             } catch (e) {
-                usersList = [JSON.parse(JSON.stringify(MASTER_PROCTOR))];
+                usersList = [];
             }
-
             if (!Array.isArray(usersList)) usersList = [];
-            if (!usersList.some(u => u && u.role === 'PROCTOR')) {
+
+            const hasMaster = usersList.some(u => u && u.isMasterProctor);
+            if (!hasMaster) {
                 usersList.unshift(JSON.parse(JSON.stringify(MASTER_PROCTOR)));
+                saveUsersStore();
             }
-            saveUsersStore();
         }
 
         function saveUsersStore() {
@@ -1259,36 +1220,38 @@
             e.preventDefault();
             initUsersStore();
 
-            const userInput = (expectedRole === 'GURU'
-                ? document.getElementById('login-guru-user').value
-                : document.getElementById('login-proctor-user').value
-            ).trim().toLowerCase();
+            const userInput = expectedRole === 'GURU'
+                ? document.getElementById('login-guru-user').value.trim().toLowerCase()
+                : document.getElementById('login-proctor-user').value.trim().toLowerCase();
+            const passInput = expectedRole === 'GURU'
+                ? document.getElementById('login-guru-pass').value.trim()
+                : document.getElementById('login-proctor-pass').value.trim();
 
-            const passInput = (expectedRole === 'GURU'
-                ? document.getElementById('login-guru-pass').value
-                : document.getElementById('login-proctor-pass').value
-            ).trim();
-
-            const found = usersList.find(u =>
+            const matched = usersList.find(u =>
                 u.role === expectedRole &&
                 u.username.trim().toLowerCase() === userInput &&
                 u.password.trim() === passInput
             );
 
-            if (!found) {
-                showToast(`Username atau password ${expectedRole === 'PROCTOR' ? 'Proktor' : 'Guru'} tidak sesuai!`, 'error');
+            if (!matched) {
+                showToast(
+                    expectedRole === 'GURU'
+                        ? 'Username atau password Guru tidak ditemukan!'
+                        : 'Username atau password Proktor tidak sesuai!',
+                    'error'
+                );
                 return;
             }
 
-            currentUser = found;
+            currentUser = matched;
             document.getElementById('view-login').classList.add('hidden');
 
-            if (found.role === 'PROCTOR') {
+            if (matched.role === 'PROCTOR') {
                 enterProctorWorkspace();
             } else {
                 enterGuruWorkspace();
             }
-            showToast(`Selamat datang, ${found.name}!`, 'success');
+            showToast(`Selamat datang, ${matched.name}!`, 'success');
         }
 
         function logoutUser() {
@@ -1305,9 +1268,10 @@
         }
 
         // =====================================================================
-        // 2. WORKSPACE PROKTOR (ARSIP CETAK A4/F4, TARIK KE DRAF & AKUN GURU)
+        // 2. DASHBOARD PROKTOR: ARSIP CETAK & MANAJEMEN AKUN GURU
         // =====================================================================
         function enterProctorWorkspace() {
+            document.getElementById('view-guru-app').classList.add('hidden');
             document.getElementById('view-proctor-app').classList.remove('hidden');
             document.getElementById('proctor-header-name').textContent = currentUser.name;
 
@@ -1316,63 +1280,191 @@
             document.getElementById('own-proctor-pass').value = currentUser.password;
 
             loadProctorArchives();
-            renderTeachersList();
             renderProctorArchiveList();
+            renderTeachersList();
             switchProctorViewTab('archive');
             refreshIcons();
         }
 
         function switchProctorViewTab(tab) {
-            const navAcc = document.getElementById('proctor-nav-accounts');
-            const navArc = document.getElementById('proctor-nav-archive');
-            const tabAcc = document.getElementById('proctor-tab-accounts');
-            const tabArc = document.getElementById('proctor-tab-archive');
+            const navArchive = document.getElementById('proctor-nav-archive');
+            const navAccounts = document.getElementById('proctor-nav-accounts');
+            const panelArchive = document.getElementById('proctor-tab-archive');
+            const panelAccounts = document.getElementById('proctor-tab-accounts');
 
-            if (tab === 'accounts') {
-                navAcc.className = 'px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-xs';
-                navArc.className = 'px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-700 text-xs font-bold flex items-center gap-2';
-                tabAcc.classList.remove('hidden');
-                tabArc.classList.add('hidden');
-                renderTeachersList();
+            if (tab === 'archive') {
+                navArchive.className = 'px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-sm';
+                navAccounts.className = 'px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-700 text-xs font-bold flex items-center gap-2';
+                panelArchive.classList.remove('hidden');
+                panelAccounts.classList.add('hidden');
             } else {
-                navArc.className = 'px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-xs';
-                navAcc.className = 'px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-700 text-xs font-bold flex items-center gap-2';
-                tabArc.classList.remove('hidden');
-                tabAcc.classList.add('hidden');
-                loadProctorArchives();
-                renderProctorArchiveList();
+                navAccounts.className = 'px-4 py-2 rounded-xl bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-sm';
+                navArchive.className = 'px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-700 text-xs font-bold flex items-center gap-2';
+                panelAccounts.classList.remove('hidden');
+                panelArchive.classList.add('hidden');
             }
             refreshIcons();
         }
 
-        function handleUpdateOwnProctorAccount(e) {
-            e.preventDefault();
-            if (!currentUser || currentUser.role !== 'PROCTOR') return;
+        function loadProctorArchives() {
+            try {
+                const raw = safeStorage.getItem(STORAGE_KEYS.PROCTOR_ARCHIVES);
+                proctorArchives = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                proctorArchives = [];
+            }
+            if (!Array.isArray(proctorArchives)) proctorArchives = [];
+        }
 
-            const newName = document.getElementById('own-proctor-name').value.trim();
-            const newUser = document.getElementById('own-proctor-user').value.trim();
-            const newPass = document.getElementById('own-proctor-pass').value.trim();
+        function saveProctorArchives() {
+            safeStorage.setItem(STORAGE_KEYS.PROCTOR_ARCHIVES, JSON.stringify(proctorArchives));
+            broadcastDataChange('PROCTOR_ARCHIVES_UPDATED');
+        }
 
-            if (usersList.some(u => u.id !== currentUser.id && u.username.toLowerCase() === newUser.toLowerCase())) {
-                showToast('Username sudah digunakan oleh akun lain!', 'error');
+        function renderProctorArchiveList() {
+            const listEl = document.getElementById('proctor-archive-list');
+            const countEl = document.getElementById('proctor-archive-count');
+            const navCountEl = document.getElementById('proctor-nav-archive-count');
+            const filterSubjEl = document.getElementById('proctor-archive-subject-filter');
+            const searchEl = document.getElementById('proctor-archive-search');
+            const returnBtn = document.getElementById('proctor-btn-return-draft');
+
+            if (countEl) countEl.textContent = proctorArchives.length;
+            if (navCountEl) navCountEl.textContent = proctorArchives.length;
+
+            // Populate dropdown filter mata pelajaran
+            if (filterSubjEl) {
+                const prevSubj = filterSubjEl.value || 'ALL';
+                const uniqueSubjects = [...new Set(proctorArchives.map(a => (a.subject || '').trim()).filter(Boolean))];
+                filterSubjEl.innerHTML = `<option value="ALL">Semua Mata Pelajaran (${proctorArchives.length})</option>` +
+                    uniqueSubjects.map(s => `<option value="${escapeAttr(s)}">${escapeHTML(s)}</option>`).join('');
+                if ([...filterSubjEl.options].some(o => o.value === prevSubj)) {
+                    filterSubjEl.value = prevSubj;
+                }
+            }
+
+            const query = (searchEl ? searchEl.value : '').trim().toLowerCase();
+            const subjFilter = filterSubjEl ? filterSubjEl.value : 'ALL';
+
+            const filtered = proctorArchives.filter(arc => {
+                if (subjFilter !== 'ALL' && (arc.subject || '').trim() !== subjFilter) return false;
+                if (query) {
+                    const hay = `${arc.folderName || ''} ${arc.subject || ''} ${arc.className || ''} ${arc.teacherName || ''}`.toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                if (proctorArchives.length === 0) selectedProctorArchiveId = null;
+                if (returnBtn) returnBtn.disabled = !selectedProctorArchiveId;
+                listEl.innerHTML = `<div class="p-4 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-300">Tidak ada folder naskah yang cocok atau belum ada naskah dikirim Guru.</div>`;
+                if (!selectedProctorArchiveId) renderProctorPreviewSheet();
                 return;
             }
 
-            const target = usersList.find(u => u.id === currentUser.id);
-            if (!target) return;
-            target.name = newName;
-            target.username = newUser;
-            target.password = newPass;
-            currentUser = target;
+            if (!selectedProctorArchiveId || !proctorArchives.some(a => a.id === selectedProctorArchiveId)) {
+                selectedProctorArchiveId = filtered[0].id;
+            }
+            if (returnBtn) returnBtn.disabled = !selectedProctorArchiveId;
 
-            saveUsersStore();
-            broadcastDataChange('USERS_UPDATED');
-            document.getElementById('proctor-header-name').textContent = target.name;
-            showToast('Kredensial akun Proktor berhasil diperbarui!', 'success');
+            listEl.innerHTML = filtered.map(arc => {
+                const isSelected = arc.id === selectedProctorArchiveId;
+                const qCount = arc.sheetData && Array.isArray(arc.sheetData.questions) ? arc.sheetData.questions.length : 0;
+                const revBadge = (arc.revisionCount || 0) > 0
+                    ? `<span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-extrabold">REVISI #${arc.revisionCount}</span>`
+                    : `<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">SIAP CETAK</span>`;
+
+                return `
+                    <div onclick="selectProctorArchive('${arc.id}')"
+                        class="p-3.5 rounded-2xl border-2 cursor-pointer transition-all space-y-1.5 ${isSelected ? 'border-amber-500 bg-amber-50/70 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'}">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-slate-900 truncate">${escapeHTML(arc.folderName || arc.subject)}</span>
+                            ${revBadge}
+                        </div>
+                        <div class="text-[11px] font-semibold text-blue-800">${escapeHTML(arc.subject)} • Kelas ${escapeHTML(arc.className)}</div>
+                        <div class="text-[11px] text-slate-600 flex items-center justify-between">
+                            <span>Guru: <strong>${escapeHTML(arc.teacherName)}</strong></span>
+                            <span>${qCount} Soal</span>
+                        </div>
+                        <div class="text-[10px] text-slate-400">Dikirim: ${escapeHTML(arc.submittedAt || '-')}</div>
+                    </div>
+                `;
+            }).join('');
+
+            renderProctorPreviewSheet();
+            refreshIcons();
         }
 
+        function selectProctorArchive(archiveId) {
+            selectedProctorArchiveId = archiveId;
+            renderProctorArchiveList();
+        }
+
+        function toggleProctorPreviewKey() {
+            proctorPreviewKeyMode = document.getElementById('proctor-toggle-key').checked;
+            renderProctorPreviewSheet();
+        }
+
+        function renderProctorPreviewSheet() {
+            const sheetEl = document.getElementById('proctor-printable-sheet');
+            const labelEl = document.getElementById('proctor-active-doc-label');
+            const arc = proctorArchives.find(a => a.id === selectedProctorArchiveId);
+
+            if (!arc || !arc.sheetData) {
+                if (labelEl) labelEl.textContent = 'Belum ada naskah dipilih';
+                sheetEl.className = 'paper-sheet paper-a4 exam-paper-font';
+                sheetEl.innerHTML = `<div style="text-align: center; padding: 64px 20px; color: #64748b; font-family: Inter, sans-serif; font-size: 13px;">Pilih salah satu folder naskah lembar soal dari daftar di sebelah kiri untuk mempratinjau dan mencetak.</div>`;
+                return;
+            }
+
+            if (labelEl) {
+                labelEl.textContent = `${arc.folderName || arc.subject} • Kelas ${arc.className} • Guru: ${arc.teacherName}`;
+            }
+
+            const clonedDoc = JSON.parse(JSON.stringify(arc.sheetData));
+            clonedDoc.layout.showAnswerKey = proctorPreviewKeyMode;
+            renderDocumentIntoElement(sheetEl, clonedDoc);
+        }
+
+        function confirmProctorReturnArchiveToDraft() {
+            const arc = proctorArchives.find(a => a.id === selectedProctorArchiveId);
+            if (!arc) return;
+
+            openConfirm({
+                title: 'Tarik Kembali Naskah ke Draf Guru?',
+                subtitle: `${arc.folderName || arc.subject} • Guru: ${arc.teacherName}`,
+                body: 'Folder naskah ini akan dihapus dari daftar arsip cetak Proktor, dan statusnya di Dashboard Guru akan otomatis kembali menjadi DRAF agar Guru dapat merevisi dan mengirimkannya ulang.',
+                confirmText: 'Ya, Tarik ke Draf',
+                confirmColor: 'red',
+                onConfirm: () => {
+                    // Kembalikan status folder milik guru menjadi DRAFT
+                    try {
+                        const rawDocs = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
+                        const docsMap = rawDocs ? JSON.parse(rawDocs) : {};
+                        if (arc.teacherId && Array.isArray(docsMap[arc.teacherId])) {
+                            const targetDoc = docsMap[arc.teacherId].find(d => d.id === arc.docId);
+                            if (targetDoc) {
+                                targetDoc.submissionStatus = 'DRAFT';
+                                targetDoc.revisionCount = 0;
+                                safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(docsMap));
+                            }
+                        }
+                    } catch (e) {}
+
+                    proctorArchives = proctorArchives.filter(a => a.id !== arc.id);
+                    selectedProctorArchiveId = proctorArchives.length > 0 ? proctorArchives[0].id : null;
+                    saveProctorArchives();
+                    renderProctorArchiveList();
+                    showToast('Naskah ditarik dari Proktor & status di Guru kembali menjadi Draf.', 'info');
+                }
+            });
+        }
+
+        // Manajemen Akun Guru oleh Proktor
         function generateRandomTeacherPass() {
-            document.getElementById('new-teacher-pass').value = 'GR-' + Math.floor(1000 + Math.random() * 9000);
+            const el = document.getElementById('new-teacher-pass');
+            if (el) el.value = 'GR-' + Math.floor(1000 + Math.random() * 9000);
         }
 
         function handleAddTeacherAccount(e) {
@@ -1385,12 +1477,12 @@
             const password = document.getElementById('new-teacher-pass').value.trim();
 
             if (usersList.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-                showToast('Username sudah dipakai! Pilih username lain.', 'error');
+                showToast('Username sudah digunakan akun lain! Gunakan username unik.', 'error');
                 return;
             }
 
             usersList.push({
-                id: 'usr-guru-' + Date.now(),
+                id: 'usr-' + Date.now(),
                 name,
                 subject,
                 username,
@@ -1398,68 +1490,70 @@
                 role: 'GURU',
                 isMasterProctor: false
             });
-
             saveUsersStore();
-            broadcastDataChange('USERS_UPDATED');
-            renderTeachersList();
+            broadcastDataChange('TEACHERS_UPDATED');
+
             document.getElementById('new-teacher-name').value = '';
             document.getElementById('new-teacher-subject').value = '';
             document.getElementById('new-teacher-user').value = '';
-            showToast(`Akun Guru "${name}" berhasil dibuat!`, 'success');
+            renderTeachersList();
+            showToast(`Akun Guru "${name}" berhasil dibuat.`, 'success');
         }
 
         function renderTeachersList() {
             const container = document.getElementById('teachers-list-container');
             const badge = document.getElementById('teachers-count-badge');
             const navBadge = document.getElementById('proctor-nav-teachers-count');
-            const search = (document.getElementById('teacher-search-input')?.value || '').trim().toLowerCase();
-
-            const allTeachers = usersList.filter(u => u.role === 'GURU');
-            if (badge) badge.textContent = allTeachers.length;
-            if (navBadge) navBadge.textContent = allTeachers.length;
+            const searchInput = document.getElementById('teacher-search-input');
             if (!container) return;
 
-            const filtered = allTeachers.filter(u =>
-                !search ||
-                u.name.toLowerCase().includes(search) ||
-                (u.subject || '').toLowerCase().includes(search) ||
-                u.username.toLowerCase().includes(search)
-            );
+            const teachers = usersList.filter(u => u.role === 'GURU');
+            if (badge) badge.textContent = teachers.length;
+            if (navBadge) navBadge.textContent = teachers.length;
+
+            const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+            const filtered = query
+                ? teachers.filter(t => t.name.toLowerCase().includes(query) || (t.subject || '').toLowerCase().includes(query) || t.username.toLowerCase().includes(query))
+                : teachers;
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-300">Belum ada akun Guru terdaftar. Silakan buat akun Guru baru di formulir sebelah kiri.</div>`;
+                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-300">Belum ada akun Guru terdaftar. Silakan buat akun Guru di formulir sebelah kiri.</div>`;
                 return;
             }
 
-            container.innerHTML = filtered.map(t => `
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="font-extrabold text-sm text-slate-900">${escapeHTML(t.name)}</span>
-                            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[11px] font-bold">${escapeHTML(t.subject || 'Guru Mapel')}</span>
+            container.innerHTML = filtered.map(t => {
+                const sentCount = proctorArchives.filter(a => a.teacherId === t.id).length;
+                return `
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-bold text-sm text-slate-900">${escapeHTML(t.name)}</span>
+                                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[11px] font-bold">${escapeHTML(t.subject || 'Guru Mapel')}</span>
+                                ${sentCount > 0 ? `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">${sentCount} Folder Terkirim</span>` : ''}
+                            </div>
+                            <div class="text-xs text-slate-600">
+                                Username: <code class="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-bold text-slate-800">${escapeHTML(t.username)}</code>
+                                &bull; Password: <code class="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-bold text-blue-700">${escapeHTML(t.password)}</code>
+                            </div>
                         </div>
-                        <div class="text-xs text-slate-500">
-                            Username: <code class="font-bold text-slate-800 bg-white px-1.5 py-0.5 rounded border border-slate-200">${escapeHTML(t.username)}</code> •
-                            Password: <code class="font-bold text-blue-700 bg-white px-1.5 py-0.5 rounded border border-slate-200">${escapeHTML(t.password)}</code>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="openEditTeacherModal('${t.id}')" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs flex items-center gap-1">
+                                <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                                <span>Edit / Reset Pass</span>
+                            </button>
+                            <button type="button" onclick="confirmDeleteTeacherAccount('${t.id}')" class="px-3 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold text-xs flex items-center gap-1">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                <span>Hapus</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        <button type="button" onclick="openEditTeacherModal('${t.id}')" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs flex items-center gap-1">
-                            <i data-lucide="key-round" class="w-3 h-3"></i>
-                            <span>Edit / Reset Password</span>
-                        </button>
-                        <button type="button" onclick="confirmDeleteTeacher('${t.id}')" class="px-3 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold text-xs flex items-center gap-1">
-                            <i data-lucide="trash-2" class="w-3 h-3"></i>
-                            <span>Hapus</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             refreshIcons();
         }
 
-        function openEditTeacherModal(id) {
-            const t = usersList.find(u => u.id === id && u.role === 'GURU');
+        function openEditTeacherModal(teacherId) {
+            const t = usersList.find(u => u.id === teacherId && u.role === 'GURU');
             if (!t) return;
             document.getElementById('edit-teacher-id').value = t.id;
             document.getElementById('edit-teacher-name').value = t.name;
@@ -1479,197 +1573,85 @@
             const t = usersList.find(u => u.id === id && u.role === 'GURU');
             if (!t) return;
 
-            const newUser = document.getElementById('edit-teacher-user').value.trim();
-            if (usersList.some(u => u.id !== id && u.username.toLowerCase() === newUser.toLowerCase())) {
+            const newUsername = document.getElementById('edit-teacher-user').value.trim();
+            if (usersList.some(u => u.id !== id && u.username.toLowerCase() === newUsername.toLowerCase())) {
                 showToast('Username sudah dipakai akun lain!', 'error');
                 return;
             }
 
             t.name = document.getElementById('edit-teacher-name').value.trim();
             t.subject = document.getElementById('edit-teacher-subject').value.trim();
-            t.username = newUser;
+            t.username = newUsername;
             t.password = document.getElementById('edit-teacher-pass').value.trim();
 
             saveUsersStore();
-            broadcastDataChange('USERS_UPDATED');
-            renderTeachersList();
+            broadcastDataChange('TEACHERS_UPDATED');
             closeModal('edit-teacher-modal');
-            showToast('Data & password akun Guru berhasil diperbarui.', 'success');
+            renderTeachersList();
+            showToast(`Akun Guru "${t.name}" berhasil diperbarui.`, 'success');
         }
 
-        function confirmDeleteTeacher(id) {
-            const t = usersList.find(u => u.id === id && u.role === 'GURU');
+        function confirmDeleteTeacherAccount(teacherId) {
+            const t = usersList.find(u => u.id === teacherId && u.role === 'GURU');
             if (!t) return;
+
             openConfirm({
                 title: `Hapus Akun Guru "${t.name}"?`,
-                subtitle: 'Akun beserta folder draf pribadinya akan dihapus permanen',
-                body: `Apakah Anda yakin ingin menghapus akun Guru ${t.name} (${t.username})?`,
+                subtitle: 'Akun login beserta seluruh draf & arsip naskah miliknya akan dihapus permanen',
+                body: `Apakah Anda yakin ingin menghapus akun Guru ${t.name} (${t.username}) secara permanen?`,
                 confirmText: 'Ya, Hapus Permanen',
+                confirmColor: 'red',
                 onConfirm: () => {
-                    usersList = usersList.filter(u => u.id !== id);
+                    usersList = usersList.filter(u => u.id !== teacherId);
                     saveUsersStore();
+
                     try {
-                        const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
-                        const map = rawMap ? JSON.parse(rawMap) : {};
-                        delete map[id];
-                        safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(map));
+                        const rawDocs = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
+                        const docsMap = rawDocs ? JSON.parse(rawDocs) : {};
+                        delete docsMap[teacherId];
+                        safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(docsMap));
                     } catch (e) {}
-                    broadcastDataChange('USERS_UPDATED');
+
+                    proctorArchives = proctorArchives.filter(a => a.teacherId !== teacherId);
+                    saveProctorArchives();
+
                     renderTeachersList();
-                    showToast(`Akun Guru "${t.name}" dihapus permanen.`, 'info');
+                    renderProctorArchiveList();
+                    showToast(`Akun Guru "${t.name}" berhasil dihapus permanen.`, 'info');
                 }
             });
         }
 
-        // ARSIP LEMBAR SOAL GURU DI PROKTOR (SIAP CETAK & TARIK KE DRAF)
-        function loadProctorArchives() {
-            try {
-                const raw = safeStorage.getItem(STORAGE_KEYS.PROCTOR_ARCHIVES);
-                proctorArchives = raw ? JSON.parse(raw) : [];
-            } catch (e) {
-                proctorArchives = [];
-            }
-            const navBadge = document.getElementById('proctor-nav-archive-count');
-            if (navBadge) navBadge.textContent = proctorArchives.length;
-        }
+        function handleUpdateOwnProctorAccount(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser.role !== 'PROCTOR') return;
 
-        function saveProctorArchives() {
-            safeStorage.setItem(STORAGE_KEYS.PROCTOR_ARCHIVES, JSON.stringify(proctorArchives));
-            const navBadge = document.getElementById('proctor-nav-archive-count');
-            if (navBadge) navBadge.textContent = proctorArchives.length;
-            broadcastDataChange('ARCHIVES_UPDATED');
-        }
+            const name = document.getElementById('own-proctor-name').value.trim();
+            const username = document.getElementById('own-proctor-user').value.trim();
+            const password = document.getElementById('own-proctor-pass').value.trim();
 
-        function populateProctorSubjectFilter() {
-            const filterEl = document.getElementById('proctor-archive-subject-filter');
-            if (!filterEl) return;
-            const prev = filterEl.value;
-            const subjects = [...new Set(proctorArchives.map(a => (a.sheetData?.meta?.subject || '').trim()).filter(Boolean))];
-            filterEl.innerHTML = `<option value="ALL">Semua Mata Pelajaran (${proctorArchives.length})</option>` +
-                subjects.map(s => `<option value="${escapeAttr(s)}">${escapeHTML(s)}</option>`).join('');
-            if ([...filterEl.options].some(o => o.value === prev)) filterEl.value = prev;
-        }
-
-        function renderProctorArchiveList() {
-            const listEl = document.getElementById('proctor-archive-list');
-            const countEl = document.getElementById('proctor-archive-count');
-            const returnBtn = document.getElementById('proctor-btn-return-draft');
-            if (!listEl) return;
-
-            populateProctorSubjectFilter();
-            const search = (document.getElementById('proctor-archive-search')?.value || '').trim().toLowerCase();
-            const subjFilter = document.getElementById('proctor-archive-subject-filter')?.value || 'ALL';
-
-            const filtered = proctorArchives.filter(arc => {
-                const subj = (arc.sheetData?.meta?.subject || '').trim();
-                const folder = (arc.sheetData?.folderName || '').toLowerCase();
-                const owner = (arc.ownerName || '').toLowerCase();
-                if (subjFilter !== 'ALL' && subj !== subjFilter) return false;
-                if (search && !subj.toLowerCase().includes(search) && !folder.includes(search) && !owner.includes(search)) return false;
-                return true;
-            });
-
-            countEl.textContent = filtered.length;
-
-            if (filtered.length === 0) {
-                selectedProctorArchiveId = null;
-                if (returnBtn) returnBtn.disabled = true;
-                listEl.innerHTML = `<div class="p-4 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-300">Belum ada folder naskah soal yang sesuai filter atau dikirimkan oleh Guru.</div>`;
-                document.getElementById('proctor-active-doc-label').textContent = 'Belum ada naskah dipilih';
-                document.getElementById('proctor-printable-sheet').innerHTML = `<div style="text-align: center; padding: 64px 20px; color: #64748b; font-family: Inter, sans-serif; font-size: 13px;">Belum ada naskah lembar soal yang dikirim oleh Guru.</div>`;
+            if (usersList.some(u => u.id !== currentUser.id && u.username.toLowerCase() === username.toLowerCase())) {
+                showToast('Username sudah dipakai akun lain!', 'error');
                 return;
             }
 
-            if (!selectedProctorArchiveId || !filtered.some(a => a.id === selectedProctorArchiveId)) {
-                selectedProctorArchiveId = filtered[0].id;
+            const target = usersList.find(u => u.id === currentUser.id);
+            if (target) {
+                target.name = name;
+                target.username = username;
+                target.password = password;
+                currentUser = target;
+                saveUsersStore();
+                document.getElementById('proctor-header-name').textContent = name;
+                showToast('Profil & kredensial Proktor berhasil diperbarui!', 'success');
             }
-            if (returnBtn) returnBtn.disabled = false;
-
-            listEl.innerHTML = filtered.map(arc => {
-                const isSelected = arc.id === selectedProctorArchiveId;
-                const folderTitle = arc.sheetData?.folderName || `${arc.sheetData?.meta?.subject || 'Mapel'} - Kelas ${arc.sheetData?.meta?.className || '-'}`;
-                const subj = arc.sheetData?.meta?.subject || 'Mata Pelajaran';
-                const cls = arc.sheetData?.meta?.className || '-';
-                const qLen = Array.isArray(arc.sheetData?.questions) ? arc.sheetData.questions.length : 0;
-
-                return `
-                    <button type="button" onclick="selectProctorArchive('${arc.id}')"
-                        class="w-full text-left p-3 rounded-xl border transition-all ${isSelected ? 'bg-amber-50 border-amber-400 ring-2 ring-amber-500/20' : 'bg-white border-slate-200 hover:bg-slate-50'}">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="font-extrabold text-xs text-slate-900 truncate">${escapeHTML(folderTitle)}</span>
-                            <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold shrink-0">${qLen} Soal</span>
-                        </div>
-                        <div class="text-[11px] text-slate-600 mt-0.5">${escapeHTML(subj)} • Kelas ${escapeHTML(cls)}</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">Guru: <strong>${escapeHTML(arc.ownerName)}</strong></div>
-                        <div class="text-[10px] text-slate-400 mt-0.5">${escapeHTML(arc.submittedAt || '')}</div>
-                    </button>
-                `;
-            }).join('');
-
-            renderSelectedProctorArchivePreview();
-        }
-
-        function selectProctorArchive(archiveId) {
-            selectedProctorArchiveId = archiveId;
-            renderProctorArchiveList();
-        }
-
-        function toggleProctorPreviewKey() {
-            proctorShowKey = document.getElementById('proctor-toggle-key').checked;
-            renderSelectedProctorArchivePreview();
-        }
-
-        function renderSelectedProctorArchivePreview() {
-            const arc = proctorArchives.find(a => a.id === selectedProctorArchiveId);
-            const sheetEl = document.getElementById('proctor-printable-sheet');
-            const labelEl = document.getElementById('proctor-active-doc-label');
-            if (!arc || !sheetEl) return;
-
-            const cloned = JSON.parse(JSON.stringify(arc.sheetData));
-            cloned.layout.showAnswerKey = proctorShowKey;
-
-            labelEl.textContent = `${cloned.folderName || cloned.meta.subject} (${arc.ownerName})`;
-            renderDocumentIntoElement(sheetEl, cloned);
-        }
-
-        function confirmProctorReturnArchiveToDraft() {
-            if (!currentUser || currentUser.role !== 'PROCTOR') return;
-            const arc = proctorArchives.find(a => a.id === selectedProctorArchiveId);
-            if (!arc) return;
-
-            const folderTitle = arc.sheetData?.folderName || arc.sheetData?.meta?.subject || 'Naskah Soal';
-            openConfirm({
-                title: `Tarik / Hapus "${folderTitle}" dari Arsip Proktor?`,
-                subtitle: 'Status folder di Dashboard Guru akan otomatis kembali menjadi DRAF',
-                body: `Naskah milik ${arc.ownerName} akan dihapus dari arsip cetak Proktor tanpa menghapus naskah asli milik Guru, dan tombol "Kirim Folder Ini ke Proktor" akan muncul kembali.`,
-                confirmText: 'Ya, Tarik ke Draf Guru',
-                onConfirm: () => {
-                    try {
-                        const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
-                        const map = rawMap ? JSON.parse(rawMap) : {};
-                        if (Array.isArray(map[arc.ownerId])) {
-                            const targetDoc = map[arc.ownerId].find(d => d.id === arc.docId);
-                            if (targetDoc) {
-                                targetDoc.submissionStatus = 'DRAFT';
-                                targetDoc.revisionCount = 0;
-                                targetDoc.submittedAt = '';
-                                safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(map));
-                            }
-                        }
-                    } catch (e) {}
-
-                    proctorArchives = proctorArchives.filter(a => a.id !== arc.id);
-                    saveProctorArchives();
-                    renderProctorArchiveList();
-                    showToast('Naskah berhasil ditarik dari arsip Proktor dan dikembalikan ke Draf Guru.', 'info');
-                }
-            });
         }
 
         // =====================================================================
-        // 3. WORKSPACE GURU (MULTI-FOLDER NASKAH SOAL TERISOLASI PER GURU)
+        // 3. WORKSPACE MULTI-FOLDER GURU (ISOLASI PER GURU)
         // =====================================================================
         function enterGuruWorkspace() {
+            document.getElementById('view-proctor-app').classList.add('hidden');
             document.getElementById('view-guru-app').classList.remove('hidden');
             document.getElementById('guru-header-badge').textContent = `${currentUser.name} (${currentUser.subject || 'Guru'})`;
 
@@ -1684,101 +1666,95 @@
         }
 
         function loadGuruDocuments() {
+            if (!currentUser) return;
+            let docsMap = {};
             try {
-                const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
-                const map = rawMap ? JSON.parse(rawMap) : {};
-                if (Array.isArray(map[currentUser.id]) && map[currentUser.id].length > 0) {
-                    guruDocuments = map[currentUser.id];
-                } else {
-                    const defaultSubj = (currentUser.subject || 'SENI RUPA').toUpperCase();
-                    const initialDoc = createSampleSheetData(`${currentUser.subject || 'Seni Rupa'} - Kelas 9`, defaultSubj, '9');
-                    initialDoc.id = 'doc-' + currentUser.id + '-' + Date.now();
-                    guruDocuments = [initialDoc];
-                    saveGuruDocuments();
-                }
+                const raw = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
+                docsMap = raw ? JSON.parse(raw) : {};
             } catch (e) {
-                const fallbackDoc = createSampleSheetData();
-                fallbackDoc.id = 'doc-' + Date.now();
-                guruDocuments = [fallbackDoc];
+                docsMap = {};
             }
 
+            if (!Array.isArray(docsMap[currentUser.id]) || docsMap[currentUser.id].length === 0) {
+                const initialDoc = createSampleSheetData(
+                    `${currentUser.subject || 'Seni Rupa'} - Kelas 9`,
+                    (currentUser.subject || 'SENI RUPA').toUpperCase(),
+                    '9'
+                );
+                docsMap[currentUser.id] = [initialDoc];
+                safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(docsMap));
+            }
+
+            guruDocuments = docsMap[currentUser.id];
             if (!activeGuruDocId || !guruDocuments.some(d => d.id === activeGuruDocId)) {
                 activeGuruDocId = guruDocuments[0].id;
             }
             appState = guruDocuments.find(d => d.id === activeGuruDocId);
         }
 
-        function saveGuruDocuments() {
-            if (!currentUser || currentUser.role !== 'GURU') return;
-            try {
-                const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
-                const map = rawMap ? JSON.parse(rawMap) : {};
-                map[currentUser.id] = guruDocuments;
-                safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(map));
-                broadcastDataChange('GURU_DOCS_UPDATED');
-            } catch (e) {
-                showToast('Penyimpanan penuh (kurangi ukuran gambar jika terlalu besar).', 'warning');
-            }
-        }
-
         function saveState() {
-            saveGuruDocuments();
+            if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
+            let docsMap = {};
+            try {
+                const raw = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
+                docsMap = raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                docsMap = {};
+            }
+
+            const idx = guruDocuments.findIndex(d => d.id === appState.id);
+            if (idx !== -1) guruDocuments[idx] = appState;
+            docsMap[currentUser.id] = guruDocuments;
+            safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(docsMap));
             renderGuruFolderControls();
         }
 
         function renderGuruFolderControls() {
-            const sel = document.getElementById('guru-doc-selector');
-            const cardsContainer = document.getElementById('guru-folder-cards-list');
-            const cnt = document.getElementById('guru-docs-count');
+            const countEl = document.getElementById('guru-docs-count');
+            const selectorEl = document.getElementById('guru-doc-selector');
+            const cardsEl = document.getElementById('guru-folder-cards-list');
             const statusBadge = document.getElementById('guru-doc-status-badge');
             const statusSub = document.getElementById('guru-doc-status-sub');
             const submitBtn = document.getElementById('guru-btn-submit-proctor');
-            if (!sel || !appState) return;
 
-            cnt.textContent = guruDocuments.length;
-            sel.innerHTML = guruDocuments.map(d => {
-                const title = d.folderName || `${d.meta.subject || 'Folder'} - Kelas ${d.meta.className || '-'}`;
-                return `<option value="${d.id}" ${d.id === activeGuruDocId ? 'selected' : ''}>${escapeHTML(title)} (${d.questions.length} soal)</option>`;
+            if (!selectorEl || !cardsEl || !appState) return;
+            if (countEl) countEl.textContent = guruDocuments.length;
+
+            selectorEl.innerHTML = guruDocuments.map(d => {
+                const qLen = Array.isArray(d.questions) ? d.questions.length : 0;
+                return `<option value="${d.id}">${escapeHTML(d.folderName || d.meta.subject)} (${qLen} Soal)</option>`;
+            }).join('');
+            selectorEl.value = appState.id;
+
+            cardsEl.innerHTML = guruDocuments.map(d => {
+                const isActive = d.id === appState.id;
+                const qLen = Array.isArray(d.questions) ? d.questions.length : 0;
+                const isSent = d.submissionStatus === 'SUBMITTED' || d.submissionStatus === 'REVISED';
+                return `
+                    <div onclick="switchActiveGuruDocument('${d.id}')"
+                        class="px-3 py-2 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-2 text-xs ${isActive ? 'bg-blue-600/25 border-blue-400 text-white' : 'bg-slate-800/70 border-slate-700 text-slate-300 hover:bg-slate-800'}">
+                        <div class="truncate">
+                            <div class="font-bold truncate">${escapeHTML(d.folderName || d.meta.subject)}</div>
+                            <div class="text-[10px] text-slate-400">${escapeHTML(d.meta.subject)} • Kls ${escapeHTML(d.meta.className)} • ${qLen} Soal</div>
+                        </div>
+                        <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold shrink-0 ${isSent ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'}">
+                            ${isSent ? 'TERKIRIM' : 'DRAF'}
+                        </span>
+                    </div>
+                `;
             }).join('');
 
-            if (cardsContainer) {
-                cardsContainer.innerHTML = guruDocuments.map(d => {
-                    const isActive = d.id === activeGuruDocId;
-                    const title = d.folderName || `${d.meta.subject || 'Folder'} - Kelas ${d.meta.className || '-'}`;
-                    const isSent = d.submissionStatus === 'SUBMITTED' || d.submissionStatus === 'REVISED';
-                    const badge = isSent
-                        ? `<span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">TERKIRIM</span>`
-                        : `<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">DRAF</span>`;
-
-                    return `
-                        <button type="button" onclick="switchActiveGuruDocument('${d.id}')"
-                            class="w-full text-left px-3 py-2 rounded-xl border transition-all flex items-center justify-between gap-2 ${isActive ? 'bg-blue-600/25 border-blue-400 text-white' : 'bg-slate-800/70 border-slate-700/80 text-slate-300 hover:bg-slate-800'}">
-                            <div class="min-w-0">
-                                <div class="text-xs font-bold truncate">${escapeHTML(title)}</div>
-                                <div class="text-[10px] text-slate-400">${d.sections.length} Bagian • ${d.questions.length} Soal</div>
-                            </div>
-                            ${badge}
-                        </button>
-                    `;
-                }).join('');
-            }
-
-            if (appState.submissionStatus === 'SUBMITTED') {
-                statusBadge.className = 'inline-flex items-center gap-1 text-[11px] font-extrabold text-emerald-400';
-                statusBadge.textContent = '✓ TERKIRIM KE PROKTOR';
-                statusSub.textContent = appState.submittedAt || 'Siap dicetak di ruang Proktor.';
-                submitBtn.textContent = 'Kirim Revisi';
-                submitBtn.className = 'px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shrink-0';
-            } else if (appState.submissionStatus === 'REVISED') {
-                statusBadge.className = 'inline-flex items-center gap-1 text-[11px] font-extrabold text-indigo-300';
-                statusBadge.textContent = `↻ TERKIRIM (REVISI #${appState.revisionCount || 1})`;
-                statusSub.textContent = appState.submittedAt || 'Pembaruan tersinkron ke Proktor.';
+            const isSent = appState.submissionStatus === 'SUBMITTED' || appState.submissionStatus === 'REVISED';
+            if (isSent) {
+                statusBadge.className = 'inline-flex items-center gap-1 text-[11px] font-extrabold text-emerald-300';
+                statusBadge.innerHTML = `<span>✓ Terkirim ke Proktor${(appState.revisionCount || 0) > 0 ? ' (Revisi #' + appState.revisionCount + ')' : ''}</span>`;
+                statusSub.textContent = `Dikirim pada ${appState.submittedAt || 'baru saja'}`;
                 submitBtn.textContent = 'Kirim Revisi';
                 submitBtn.className = 'px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shrink-0';
             } else {
                 statusBadge.className = 'inline-flex items-center gap-1 text-[11px] font-extrabold text-amber-300';
-                statusBadge.textContent = '● DRAF PRIBADI (Belum Dikirim)';
-                statusSub.textContent = 'Klik Kirim Folder Ini ke Proktor jika sudah siap dicetak.';
+                statusBadge.innerHTML = `<span>Draf Pribadi (Belum Dikirim)</span>`;
+                statusSub.textContent = 'Kirim folder ini ke Proktor jika sudah siap dicetak.';
                 submitBtn.textContent = 'Kirim Folder Ini ke Proktor';
                 submitBtn.className = 'px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shrink-0';
             }
@@ -1789,21 +1765,19 @@
             if (!found) return;
             activeGuruDocId = found.id;
             appState = found;
+            renderGuruFolderControls();
             syncInputsFromState();
             renderSectionsEditor();
             resetQuestionForm();
             renderSavedQuestionsList();
             renderPrintableSheet();
-            renderGuruFolderControls();
         }
 
         function openNewFolderModal() {
-            if (!currentUser || currentUser.role !== 'GURU') return;
             document.getElementById('nf-folder-name').value = '';
-            document.getElementById('nf-subject').value = (currentUser.subject || '').toUpperCase();
-            document.getElementById('nf-class').value = '';
+            document.getElementById('nf-subject').value = (currentUser && currentUser.subject) ? currentUser.subject.toUpperCase() : '';
+            document.getElementById('nf-class').value = '9';
             document.getElementById('nf-template-mode').value = 'empty';
-
             const modal = document.getElementById('new-folder-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -1823,126 +1797,132 @@
                 ? createSampleSheetData(folderName, subject, className)
                 : createEmptySheetData(folderName, subject, className);
 
-            newDoc.id = 'doc-' + currentUser.id + '-' + Date.now();
             guruDocuments.push(newDoc);
             activeGuruDocId = newDoc.id;
             appState = newDoc;
+            saveState();
 
-            saveGuruDocuments();
+            closeModal('new-folder-modal');
             renderGuruFolderControls();
             syncInputsFromState();
             renderSectionsEditor();
             resetQuestionForm();
             renderSavedQuestionsList();
             renderPrintableSheet();
-            closeModal('new-folder-modal');
             showToast(`Folder "${folderName}" berhasil dibuat!`, 'success');
         }
 
         function duplicateActiveGuruDocument() {
             if (!appState) return;
             const clone = JSON.parse(JSON.stringify(appState));
-            clone.id = 'doc-' + currentUser.id + '-' + Date.now();
+            clone.id = 'doc-' + Date.now();
+            clone.folderName = `${appState.folderName || appState.meta.subject} (Salinan)`;
             clone.submissionStatus = 'DRAFT';
             clone.revisionCount = 0;
             clone.submittedAt = '';
-            clone.folderName = `${clone.folderName || clone.meta.subject} (Salinan)`;
+
             guruDocuments.push(clone);
             activeGuruDocId = clone.id;
             appState = clone;
+            saveState();
 
-            saveGuruDocuments();
             renderGuruFolderControls();
             syncInputsFromState();
             renderSectionsEditor();
             renderSavedQuestionsList();
             renderPrintableSheet();
-            showToast('Folder naskah berhasil diduplikat!', 'success');
+            showToast(`Folder berhasil diduplikat: "${clone.folderName}".`, 'success');
         }
 
         function confirmDeleteActiveGuruDocument() {
+            if (!appState) return;
             if (guruDocuments.length <= 1) {
-                showToast('Minimal harus ada 1 folder naskah! Gunakan "Kosongkan Soal" jika ingin menghapus isinya.', 'warning');
+                showToast('Minimal harus tersisa 1 folder naskah di workspace Anda.', 'warning');
                 return;
             }
-            const title = appState.folderName || `${appState.meta.subject} - Kelas ${appState.meta.className}`;
+
+            const targetId = appState.id;
+            const targetTitle = appState.folderName || appState.meta.subject;
+
             openConfirm({
-                title: `Hapus Folder "${title}"?`,
-                subtitle: 'Folder beserta seluruh soal di dalamnya akan dihapus permanen (termasuk di arsip Proktor)',
-                body: 'Apakah Anda yakin ingin menghapus folder naskah soal ini secara permanen?',
+                title: `Hapus Folder "${targetTitle}"?`,
+                subtitle: 'Folder beserta seluruh soal di dalamnya akan dihapus dari Guru & Proktor',
+                body: `Apakah Anda yakin ingin menghapus folder "${targetTitle}" secara permanen?`,
                 confirmText: 'Ya, Hapus Folder',
+                confirmColor: 'red',
                 onConfirm: () => {
-                    const deletedId = appState.id;
-                    guruDocuments = guruDocuments.filter(d => d.id !== deletedId);
+                    guruDocuments = guruDocuments.filter(d => d.id !== targetId);
                     activeGuruDocId = guruDocuments[0].id;
                     appState = guruDocuments[0];
-                    saveGuruDocuments();
 
+                    // Hapus juga dari arsip proktor jika sempat terkirim
                     loadProctorArchives();
-                    proctorArchives = proctorArchives.filter(a => a.docId !== deletedId);
+                    proctorArchives = proctorArchives.filter(a => a.docId !== targetId);
                     saveProctorArchives();
 
+                    saveState();
                     renderGuruFolderControls();
                     syncInputsFromState();
                     renderSectionsEditor();
                     resetQuestionForm();
                     renderSavedQuestionsList();
                     renderPrintableSheet();
-                    showToast('Folder naskah berhasil dihapus.', 'info');
+                    showToast(`Folder "${targetTitle}" telah dihapus.`, 'info');
                 }
             });
         }
 
         function submitCurrentSheetToProctor() {
             if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
-            if (appState.questions.length === 0) {
-                showToast('Tambahkan minimal 1 butir soal ke dalam folder sebelum mengirim ke Proktor!', 'warning');
+            if (!Array.isArray(appState.questions) || appState.questions.length === 0) {
+                showToast('Folder ini masih kosong (0 soal)! Tambahkan minimal 1 soal sebelum mengirim ke Proktor.', 'warning');
                 return;
             }
 
-            loadProctorArchives();
-            const nowStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const archiveId = 'arc-' + currentUser.id + '-' + appState.id;
-            const existingIdx = proctorArchives.findIndex(a => a.id === archiveId);
+            const nowStr = new Date().toLocaleString('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
 
             if (appState.submissionStatus === 'SUBMITTED' || appState.submissionStatus === 'REVISED') {
                 appState.submissionStatus = 'REVISED';
                 appState.revisionCount = (appState.revisionCount || 0) + 1;
-                appState.submittedAt = `Revisi #${appState.revisionCount} pukul ${nowStr}`;
             } else {
                 appState.submissionStatus = 'SUBMITTED';
-                appState.submittedAt = `Terkirim pukul ${nowStr}`;
             }
+            appState.submittedAt = nowStr;
+            saveState();
 
-            const record = {
-                id: archiveId,
+            loadProctorArchives();
+            const existingIdx = proctorArchives.findIndex(a => a.teacherId === currentUser.id && a.docId === appState.id);
+            const archivePayload = {
+                id: existingIdx !== -1 ? proctorArchives[existingIdx].id : ('arc-' + Date.now()),
                 docId: appState.id,
-                ownerId: currentUser.id,
-                ownerName: currentUser.name,
-                submittedAt: appState.submittedAt,
+                teacherId: currentUser.id,
+                teacherName: currentUser.name,
+                folderName: appState.folderName || `${appState.meta.subject} - Kelas ${appState.meta.className}`,
+                subject: appState.meta.subject || currentUser.subject || 'Mata Pelajaran',
+                className: appState.meta.className || '-',
+                revisionCount: appState.revisionCount || 0,
+                submittedAt: nowStr,
                 sheetData: JSON.parse(JSON.stringify(appState))
             };
 
             if (existingIdx !== -1) {
-                proctorArchives[existingIdx] = record;
+                proctorArchives[existingIdx] = archivePayload;
             } else {
-                proctorArchives.unshift(record);
+                proctorArchives.unshift(archivePayload);
             }
-
             saveProctorArchives();
-            saveState();
-            showToast(`Folder "${appState.folderName || appState.meta.subject}" berhasil dikirim ke arsip Proktor!`, 'success');
+
+            showToast(`Folder "${archivePayload.folderName}" berhasil dikirim ke arsip cetak Proktor!`, 'success');
         }
 
+        // =====================================================================
+        // 4. SINKRONISASI INPUT IDENTITAS & BAGIAN ROMAWI
+        // =====================================================================
         function syncInputsFromState() {
+            if (!appState) return;
             document.getElementById('meta-folder-name').value = appState.folderName || '';
-            document.getElementById('meta-kop-image').value = appState.meta.kopImage || '';
-            document.getElementById('meta-kop-height').value = appState.meta.kopHeight || 135;
-            document.getElementById('meta-kop-height-label').textContent = `${appState.meta.kopHeight || 135}px`;
-            document.getElementById('meta-kop-fullwidth').checked = appState.meta.kopFullWidth !== false;
-            document.getElementById('meta-kop-doubleborder').checked = Boolean(appState.meta.kopDoubleBorder);
-            refreshKopPreviewBox();
-
             document.getElementById('meta-line1').value = appState.meta.line1 || '';
             document.getElementById('meta-line2').value = appState.meta.line2 || '';
             document.getElementById('meta-line3').value = appState.meta.line3 || '';
@@ -1966,13 +1946,6 @@
         function updateMetaAndRender() {
             if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
             appState.folderName = document.getElementById('meta-folder-name').value;
-            appState.meta.kopImage = document.getElementById('meta-kop-image').value.trim();
-            appState.meta.kopHeight = parseInt(document.getElementById('meta-kop-height').value, 10) || 135;
-            document.getElementById('meta-kop-height-label').textContent = `${appState.meta.kopHeight}px`;
-            appState.meta.kopFullWidth = document.getElementById('meta-kop-fullwidth').checked;
-            appState.meta.kopDoubleBorder = document.getElementById('meta-kop-doubleborder').checked;
-            refreshKopPreviewBox();
-
             appState.meta.line1 = document.getElementById('meta-line1').value;
             appState.meta.line2 = document.getElementById('meta-line2').value;
             appState.meta.line3 = document.getElementById('meta-line3').value;
@@ -1995,83 +1968,64 @@
             renderPrintableSheet();
         }
 
-        // =====================================================================
-        // 4. MANAJEMEN BAGIAN SOAL (ROMAWI I, II, III, IV...)
-        // =====================================================================
         function renderSectionsEditor() {
             const container = document.getElementById('sections-editor-list');
             const selectEl = document.getElementById('q-section-id');
-            const prevSelected = selectEl ? selectEl.value : '';
+            if (!container || !selectEl || !appState) return;
 
-            if (container) {
-                container.innerHTML = appState.sections.map((sec, idx) => {
-                    const roman = ROMAN_NUMERALS[idx] || String(idx + 1);
-                    const canDelete = appState.sections.length > 1;
-                    return `
-                        <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-1.5">
-                            <div class="flex items-center justify-between gap-2">
-                                <span class="px-2 py-0.5 rounded bg-slate-900 text-white text-[11px] font-extrabold">Bagian ${roman}</span>
-                                <div class="flex items-center gap-1">
-                                    <button type="button" onclick="moveSectionOrder(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 text-slate-700" title="Geser naik">
-                                        <i data-lucide="chevron-up" class="w-3 h-3"></i>
-                                    </button>
-                                    <button type="button" onclick="moveSectionOrder(${idx}, 1)" ${idx === appState.sections.length - 1 ? 'disabled' : ''} class="p-1 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 text-slate-700" title="Geser turun">
-                                        <i data-lucide="chevron-down" class="w-3 h-3"></i>
-                                    </button>
-                                    <button type="button" onclick="deleteSection('${sec.id}')" ${!canDelete ? 'disabled' : ''} class="p-1 rounded ${canDelete ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'text-slate-300'}" title="Hapus bagian">
-                                        <i data-lucide="trash-2" class="w-3 h-3"></i>
-                                    </button>
-                                </div>
+            const prevSelected = selectEl.value;
+            container.innerHTML = appState.sections.map((sec, idx) => {
+                const roman = ROMAN_NUMERALS[idx] || String(idx + 1);
+                return `
+                    <div class="p-2.5 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="px-2 py-0.5 rounded bg-slate-900 text-white text-[11px] font-extrabold">Bagian ${roman}.</span>
+                            <div class="flex items-center gap-1">
+                                <button type="button" onclick="moveSectionOrder(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 text-slate-700" title="Geser naik"><i data-lucide="chevron-up" class="w-3 h-3"></i></button>
+                                <button type="button" onclick="moveSectionOrder(${idx}, 1)" ${idx === appState.sections.length - 1 ? 'disabled' : ''} class="p-1 rounded bg-slate-100 hover:bg-slate-200 disabled:opacity-30 text-slate-700" title="Geser turun"><i data-lucide="chevron-down" class="w-3 h-3"></i></button>
+                                <button type="button" onclick="deleteSection('${sec.id}')" ${appState.sections.length <= 1 ? 'disabled' : ''} class="p-1 rounded bg-rose-50 hover:bg-rose-100 disabled:opacity-30 text-rose-600" title="Hapus bagian"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
                             </div>
-                            <input type="text" value="${escapeAttr(sec.instruction)}" oninput="updateSectionInstruction('${sec.id}', this.value)"
-                                placeholder="Tulis petunjuk pengerjaan bagian ${roman}..."
-                                class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-medium bg-slate-50 focus:bg-white">
                         </div>
-                    `;
-                }).join('');
-            }
+                        <input type="text" value="${escapeAttr(sec.instruction)}" oninput="updateSectionInstruction('${sec.id}', this.value)"
+                            placeholder="Tulis perintah bagian..." class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">
+                    </div>
+                `;
+            }).join('');
 
-            if (selectEl) {
-                selectEl.innerHTML = appState.sections.map((sec, idx) => {
-                    const roman = ROMAN_NUMERALS[idx] || String(idx + 1);
-                    const shortLabel = (sec.instruction || '').slice(0, 34) + ((sec.instruction || '').length > 34 ? '...' : '');
-                    return `<option value="${sec.id}">Bagian ${roman} — ${escapeHTML(shortLabel)}</option>`;
-                }).join('');
+            selectEl.innerHTML = appState.sections.map((sec, idx) => {
+                const roman = ROMAN_NUMERALS[idx] || String(idx + 1);
+                return `<option value="${sec.id}">Bagian ${roman}. ${escapeHTML(sec.instruction.slice(0, 38))}...</option>`;
+            }).join('');
 
-                if ([...selectEl.options].some(o => o.value === prevSelected)) {
-                    selectEl.value = prevSelected;
-                }
+            if ([...selectEl.options].some(o => o.value === prevSelected)) {
+                selectEl.value = prevSelected;
             }
             refreshIcons();
         }
 
         function addNewSection() {
-            if (!currentUser || currentUser.role !== 'GURU') return;
-            const idx = appState.sections.length;
-            const roman = ROMAN_NUMERALS[idx] || String(idx + 1);
-            const newId = 'sec-' + Date.now();
+            if (!appState) return;
             appState.sections.push({
-                id: newId,
-                instruction: `Petunjuk pengerjaan soal Bagian ${roman}...`
+                id: 'sec-' + Date.now(),
+                instruction: 'Jawablah soal-soal berikut dengan tepat!'
             });
             saveState();
             renderSectionsEditor();
-            document.getElementById('q-section-id').value = newId;
             renderPrintableSheet();
-            showToast(`Bagian ${roman} ditambahkan.`, 'success');
         }
 
         function updateSectionInstruction(secId, val) {
-            if (!currentUser || currentUser.role !== 'GURU') return;
+            if (!appState) return;
             const sec = appState.sections.find(s => s.id === secId);
-            if (!sec) return;
-            sec.instruction = val;
-            saveState();
-            renderPrintableSheet();
+            if (sec) {
+                sec.instruction = val;
+                saveState();
+                renderPrintableSheet();
+            }
         }
 
         function moveSectionOrder(idx, delta) {
-            if (!currentUser || currentUser.role !== 'GURU') return;
+            if (!appState) return;
             const target = idx + delta;
             if (target < 0 || target >= appState.sections.length) return;
             const arr = appState.sections;
@@ -2082,11 +2036,9 @@
         }
 
         function deleteSection(secId) {
-            if (!currentUser || currentUser.role !== 'GURU') return;
-            if (appState.sections.length <= 1) return;
-            const remaining = appState.sections.filter(s => s.id !== secId);
-            const fallbackId = remaining[0].id;
-            appState.sections = remaining;
+            if (!appState || appState.sections.length <= 1) return;
+            appState.sections = appState.sections.filter(s => s.id !== secId);
+            const fallbackId = appState.sections[0].id;
             appState.questions.forEach(q => {
                 if (q.sectionId === secId) q.sectionId = fallbackId;
             });
@@ -2094,440 +2046,30 @@
             renderSectionsEditor();
             renderSavedQuestionsList();
             renderPrintableSheet();
-            showToast('Bagian dihapus (soal di dalamnya dipindah ke Bagian I).', 'info');
         }
 
         // =====================================================================
-        // 5. RENDER DOKUMEN KERTAS CETAK (DIPAKAI GURU & PROKTOR)
+        // 5. FORM PEMBUAT & EDITOR 6 TIPE SOAL
         // =====================================================================
-        function renderPrintableSheet() {
-            const sheet = document.getElementById('printable-sheet');
-            if (!sheet || !appState) return;
-
-            const paperText = appState.layout.paper === 'f4' ? 'Kertas F4 / Folio' : 'Kertas A4';
-            document.getElementById('preview-paper-label').textContent = `${paperText} • ${appState.layout.fontSize}`;
-
-            const modePill = document.getElementById('preview-mode-pill');
-            if (appState.layout.showAnswerKey) {
-                modePill.textContent = 'Mode Kunci Jawaban (Guru)';
-                modePill.className = 'px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[11px]';
-            } else {
-                modePill.textContent = 'Lembar Soal Siswa';
-                modePill.className = 'px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[11px]';
-            }
-
-            renderDocumentIntoElement(sheet, appState);
+        function getOptionLetter(idx) {
+            return String.fromCharCode(65 + idx);
         }
 
-        function renderDocumentIntoElement(sheetEl, docData) {
-            sheetEl.className = `paper-sheet exam-paper-font ${docData.layout.paper === 'f4' ? 'paper-f4' : 'paper-a4'}`;
-            sheetEl.style.fontSize = docData.layout.fontSize || '12pt';
-
-            const m = docData.meta;
-            const dots = m.showStudentDots ? '........................................' : '';
-            const keyBanner = docData.layout.showAnswerKey
-                ? `<div style="margin-bottom: 6px; text-align: center;"><span style="border: 1.5px solid #000; padding: 2px 10px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px;">PEGANGAN GURU &amp; KUNCI JAWABAN</span></div>`
-                : '';
-
-            let kopBannerHTML = '';
-            if (m.kopImage && m.kopImage.trim()) {
-                const kHeight = Number(m.kopHeight) || 135;
-                const kFullWidth = m.kopFullWidth !== false;
-                const kDoubleBorder = Boolean(m.kopDoubleBorder);
-                kopBannerHTML = `
-                    <div style="margin-bottom: 10px; text-align: center; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
-                        <img src="${escapeAttr(m.kopImage)}" alt="Kop Surat Resmi"
-                            style="${kFullWidth ? 'width: 100%;' : 'max-width: 100%;'} max-height: ${kHeight}px; height: auto; object-fit: contain; display: block; margin: 0 auto;">
-                        ${kDoubleBorder ? `<div style="border-top: 2.5px solid #000000; border-bottom: 1px solid #000000; height: 3px; margin-top: 6px;"></div>` : ''}
-                    </div>
-                `;
-            }
-
-            let headerHTML = `
-                <div class="no-break" style="margin-bottom: 12px;">
-                    ${keyBanner}
-                    ${kopBannerHTML}
-                    <div style="text-align: center; line-height: 1.3;">
-                        <div style="font-weight: bold; font-size: 1.15em; text-transform: uppercase;">${escapeHTML(m.line1)}</div>
-                        <div style="font-weight: bold; font-size: 1.15em; text-transform: uppercase;">${escapeHTML(m.line2)}</div>
-                        <div style="font-style: italic; font-size: 1.05em;">${escapeHTML(m.line3)}</div>
-                    </div>
-
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 12px; font-weight: bold; line-height: 1.45;">
-                        <tr>
-                            <td style="width: 18%; vertical-align: top;">Mata Pelajaran</td>
-                            <td style="width: 2%; vertical-align: top;">:</td>
-                            <td style="width: 34%; vertical-align: top; padding-right: 12px;">${escapeHTML(m.subject)}</td>
-                            <td style="width: 14%; vertical-align: top;">Nama</td>
-                            <td style="width: 2%; vertical-align: top;">:</td>
-                            <td style="width: 30%; vertical-align: top; font-weight: normal;">${dots}</td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: top;">Kelas</td>
-                            <td style="vertical-align: top;">:</td>
-                            <td style="vertical-align: top; padding-right: 12px;">${escapeHTML(m.className)}</td>
-                            <td style="vertical-align: top;">Kelas</td>
-                            <td style="vertical-align: top;">:</td>
-                            <td style="vertical-align: top; font-weight: normal;">${dots}</td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: top;">Hari/Tanggal</td>
-                            <td style="vertical-align: top;">:</td>
-                            <td style="vertical-align: top; padding-right: 12px; font-weight: ${m.date ? 'bold' : 'normal'};">${escapeHTML(m.date)}</td>
-                            <td style="vertical-align: top;">No. Absen</td>
-                            <td style="vertical-align: top;">:</td>
-                            <td style="vertical-align: top; font-weight: normal;">${dots}</td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: top;">Alokasi Waktu</td>
-                            <td style="vertical-align: top;">:</td>
-                            <td style="vertical-align: top; padding-right: 12px; font-weight: ${m.duration ? 'bold' : 'normal'};">${escapeHTML(m.duration)}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    <div style="border-bottom: 2px solid #000000; margin-top: 8px;"></div>
-                </div>
-            `;
-
-            let instrHTML = '';
-            if (m.showInstructions && m.instructions.trim()) {
-                instrHTML = `
-                    <div class="no-break" style="border: 1px solid #000; padding: 8px 12px; margin-bottom: 12px; font-size: 0.92em; line-height: 1.4;">
-                        <div style="font-weight: bold; margin-bottom: 2px;">Petunjuk Umum:</div>
-                        <div style="white-space: pre-line;">${escapeHTML(m.instructions)}</div>
-                    </div>
-                `;
-            }
-
-            let questionsHTML = '';
-            if (!docData.questions || docData.questions.length === 0) {
-                questionsHTML = `
-                    <div style="text-align: center; padding: 48px 16px; border: 1px dashed #94a3b8; color: #64748b; font-family: Inter, sans-serif; font-size: 13px;">
-                        Folder ini masih kosong. Silakan tambahkan butir soal melalui panel editor di sebelah kiri.
-                    </div>
-                `;
-            } else {
-                const defaultSecId = docData.sections[0]?.id;
-                docData.sections.forEach((sec, sIdx) => {
-                    const secQuestions = docData.questions.filter(q =>
-                        q.sectionId === sec.id || (!q.sectionId && sec.id === defaultSecId)
-                    );
-                    if (secQuestions.length === 0) return;
-
-                    const roman = ROMAN_NUMERALS[sIdx] || String(sIdx + 1);
-                    if (sec.instruction && sec.instruction.trim()) {
-                        questionsHTML += `
-                            <div class="no-break" style="font-weight: bold; margin-top: ${sIdx === 0 ? '4px' : '16px'}; margin-bottom: 8px; line-height: 1.35;">
-                                ${roman}. ${escapeHTML(sec.instruction)}
-                            </div>
-                        `;
-                    }
-
-                    secQuestions.forEach((q, qIdx) => {
-                        questionsHTML += renderSingleQuestionPrintBlock(q, qIdx + 1, docData.layout);
-                    });
-                });
-            }
-
-            sheetEl.innerHTML = `${headerHTML}${instrHTML}<div class="mt-3 space-y-3">${questionsHTML}</div>`;
-        }
-
-        function renderSingleQuestionPrintBlock(q, num, layoutCfg) {
-            const showKey = Boolean(layoutCfg.showAnswerKey);
-            const imgHTML = q.image
-                ? `<div style="margin: 6px 0 8px 0;"><img src="${escapeAttr(q.image)}" alt="Gambar Soal ${num}" style="max-height: 210px; max-width: 100%; border: 1px solid #cbd5e1; padding: 2px; object-fit: contain;"></div>`
-                : '';
-
-            let bodyHTML = '';
-
-            if (q.type === 'multiple_choice' || q.type === 'complex_mc') {
-                const isComplex = q.type === 'complex_mc';
-                const opts = Array.isArray(q.options) ? q.options : [];
-                const optImgs = Array.isArray(q.optionImages) ? q.optionImages : [];
-                const correctSet = isComplex
-                    ? new Set(Array.isArray(q.correctIndices) ? q.correctIndices : [])
-                    : new Set(q.correctIndex !== undefined ? [q.correctIndex] : []);
-                const colPref = layoutCfg.optionCols;
-
-                const allShortText = opts.every((t, i) => (t || '').length <= 28 && !optImgs[i]);
-                const useTwoCols = !isComplex && (colPref === '2' || (colPref === 'auto' && allShortText && opts.length >= 4));
-
-                if (useTwoCols) {
-                    bodyHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 4px;">`;
-                    for (let i = 0; i < opts.length; i += 2) {
-                        bodyHTML += `<tr>`;
-                        for (let c = 0; c < 2; c++) {
-                            const optIdx = i + c;
-                            if (optIdx < opts.length) {
-                                const letter = String.fromCharCode(65 + optIdx);
-                                const isKey = showKey && correctSet.has(optIdx);
-                                const highlightStyle = isKey ? 'font-weight: bold; text-decoration: underline; background-color: #fef3c7; padding: 1px 4px;' : '';
-                                bodyHTML += `
-                                    <td style="width: 50%; vertical-align: top; padding: 2px 8px 2px 0;">
-                                        <span style="${highlightStyle}">${letter}. ${escapeHTML(opts[optIdx] || '')}${isKey ? ' ✔' : ''}</span>
-                                    </td>
-                                `;
-                            } else {
-                                bodyHTML += `<td style="width: 50%;"></td>`;
-                            }
-                        }
-                        bodyHTML += `</tr>`;
-                    }
-                    bodyHTML += `</table>`;
-                } else {
-                    bodyHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 4px;">`;
-                    opts.forEach((optText, optIdx) => {
-                        const letter = String.fromCharCode(65 + optIdx);
-                        const isKey = showKey && correctSet.has(optIdx);
-                        const highlightStyle = isKey ? 'font-weight: bold; background-color: #fef3c7; padding: 1px 5px;' : '';
-                        const prefixMarker = isComplex
-                            ? `<span style="font-size: 1.05em; font-weight: bold;">${isKey ? '☑' : '☐'}</span> ${letter}.`
-                            : `${letter}.`;
-                        const optImgHTML = optImgs[optIdx]
-                            ? `<div style="margin-top: 4px;"><img src="${escapeAttr(optImgs[optIdx])}" alt="Opsi ${letter}" style="max-height: 120px; max-width: 100%; border: 1px solid #cbd5e1; padding: 2px;"></div>`
-                            : '';
-                        bodyHTML += `
-                            <tr>
-                                <td style="width: ${isComplex ? '42px' : '24px'}; vertical-align: top; padding: 3px 0; ${highlightStyle}">${prefixMarker}</td>
-                                <td style="vertical-align: top; padding: 3px 0;">
-                                    <span style="${highlightStyle}">${escapeHTML(optText || '')}${isKey && !isComplex ? ' ✔' : ''}</span>
-                                    ${optImgHTML}
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    bodyHTML += `</table>`;
-                }
-            } else if (q.type === 'true_false') {
-                const stmts = Array.isArray(q.tfStatements) ? q.tfStatements : [];
-                bodyHTML += `
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 6px; border: 1px solid #000000;">
-                        <thead>
-                            <tr style="background-color: #f8fafc;">
-                                <th style="border: 1px solid #000000; padding: 5px 6px; width: 36px; text-align: center;">No.</th>
-                                <th style="border: 1px solid #000000; padding: 5px 8px; text-align: left;">Pernyataan</th>
-                                <th style="border: 1px solid #000000; padding: 5px 8px; width: 72px; text-align: center;">Benar</th>
-                                <th style="border: 1px solid #000000; padding: 5px 8px; width: 72px; text-align: center;">Salah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${stmts.map((st, sIdx) => {
-                                const checkTrue = showKey && st.isTrue === true;
-                                const checkFalse = showKey && st.isTrue === false;
-                                return `
-                                    <tr>
-                                        <td style="border: 1px solid #000000; padding: 5px 6px; text-align: center; vertical-align: top; font-weight: bold;">${sIdx + 1}.</td>
-                                        <td style="border: 1px solid #000000; padding: 5px 8px; vertical-align: top;">${escapeHTML(st.text || '')}</td>
-                                        <td style="border: 1px solid #000000; padding: 5px 8px; text-align: center; vertical-align: middle; font-weight: bold; ${checkTrue ? 'background-color: #fef3c7; font-size: 1.1em;' : ''}">${checkTrue ? '✓' : ''}</td>
-                                        <td style="border: 1px solid #000000; padding: 5px 8px; text-align: center; vertical-align: middle; font-weight: bold; ${checkFalse ? 'background-color: #fef3c7; font-size: 1.1em;' : ''}">${checkFalse ? '✓' : ''}</td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } else if (q.type === 'matching') {
-                const leftHeader = q.leftHeader || 'Pernyataan / Konsep';
-                const rightHeaders = Array.isArray(q.rightHeaders) ? q.rightHeaders : [];
-                const rows = Array.isArray(q.matchingRows) ? q.matchingRows : [];
-                const rightColWidth = rightHeaders.length > 0 ? Math.floor(68 / rightHeaders.length) : 22;
-
-                bodyHTML += `
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 6px; border: 1px solid #000000; line-height: 1.3;">
-                        <thead>
-                            <tr>
-                                <th style="border: 1px solid #000000; padding: 6px 4px; width: 32px; text-align: center;"></th>
-                                <th style="border: 1px solid #000000; padding: 6px 8px; width: 22%; text-align: center; font-weight: bold; vertical-align: top;">${escapeHTML(leftHeader)}</th>
-                                ${rightHeaders.map(rh => `
-                                    <th style="border: 1px solid #000000; padding: 6px 8px; width: ${rightColWidth}%; text-align: center; font-weight: bold; vertical-align: top;">${escapeHTML(rh)}</th>
-                                `).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows.map((row, rIdx) => `
-                                <tr>
-                                    <td style="border: 1px solid #000000; padding: 6px 4px; text-align: center; font-weight: bold; vertical-align: top;">${rIdx + 1}.</td>
-                                    <td style="border: 1px solid #000000; padding: 6px 8px; vertical-align: top;">${escapeHTML(row.leftText || '')}</td>
-                                    ${rightHeaders.map((_, cIdx) => {
-                                        const isMatchKey = showKey && Number(row.correctColIndex) === cIdx;
-                                        return `<td style="border: 1px solid #000000; padding: 6px 8px; text-align: center; vertical-align: middle; font-weight: bold; ${isMatchKey ? 'background-color: #fef3c7; font-size: 1.15em;' : ''}">${isMatchKey ? '✓' : ''}</td>`;
-                                    }).join('')}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } else if (q.type === 'short_answer') {
-                if (showKey && q.sampleAnswer) {
-                    bodyHTML += `<div style="margin-top: 4px; background-color: #fef3c7; padding: 3px 8px; border-left: 3px solid #d97706;"><strong>Kunci Jawaban:</strong> ${escapeHTML(q.sampleAnswer)}</div>`;
-                }
-            } else if (q.type === 'essay') {
-                const lineCount = Number(q.essayLines) || 0;
-                if (showKey && q.sampleAnswer) {
-                    bodyHTML += `<div style="margin-top: 6px; background-color: #fef3c7; padding: 6px 10px; border: 1px solid #f59e0b; font-size: 0.94em;"><strong>Pedoman / Kunci Jawaban:</strong><br><span style="white-space: pre-line;">${escapeHTML(q.sampleAnswer)}</span></div>`;
-                } else if (lineCount > 0) {
-                    let linesHTML = '<div style="margin-top: 6px;">';
-                    for (let l = 0; l < lineCount; l++) {
-                        linesHTML += `<div style="border-bottom: 1px dotted #334155; height: 22px; width: 100%;"></div>`;
-                    }
-                    linesHTML += '</div>';
-                    bodyHTML += linesHTML;
-                }
-            }
-
-            if (showKey && q.explanation) {
-                bodyHTML += `<div style="margin-top: 4px; font-size: 0.88em; font-style: italic; color: #334155;">Pembahasan: ${escapeHTML(q.explanation)}</div>`;
-            }
-
-            return `
-                <div class="no-break" style="margin-bottom: 12px;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td style="width: 28px; vertical-align: top; font-weight: normal;">${num}.</td>
-                            <td style="vertical-align: top;">
-                                <div style="white-space: pre-line;">${escapeHTML(q.text)}</div>
-                                ${imgHTML}
-                                ${bodyHTML}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            `;
-        }
-
-        // =====================================================================
-        // 6. FORM PEMBUAT & EDITOR SOAL (6 TIPE LENGKAP)
-        // =====================================================================
-        function renderOptionBuilderFields(existingQ = null) {
-            const type = existingQ ? existingQ.type : document.getElementById('q-type').value;
-            const area = document.getElementById('q-dynamic-options-area');
-            const linesWrap = document.getElementById('q-essay-lines-wrap');
-            const textLabel = document.getElementById('q-text-label');
-
-            linesWrap.classList.toggle('hidden', type !== 'essay');
-            if (textLabel) {
-                textLabel.textContent = type === 'matching'
-                    ? 'Instruksi Pengantar Soal Menjodohkan *'
-                    : type === 'true_false'
-                        ? 'Pengantar / Stimulus Pernyataan Benar-Salah *'
-                        : 'Teks Pertanyaan / Perintah Soal *';
-            }
-
-            if (type === 'multiple_choice' || type === 'complex_mc') {
-                const isComplex = type === 'complex_mc';
-                if (existingQ && Array.isArray(existingQ.options)) {
-                    const imgs = Array.isArray(existingQ.optionImages) ? existingQ.optionImages : [];
-                    const correctIndices = Array.isArray(existingQ.correctIndices) ? existingQ.correctIndices : [];
-                    draftOptions = existingQ.options.map((txt, idx) => ({
-                        text: txt || '',
-                        image: imgs[idx] || '',
-                        isCorrect: isComplex ? correctIndices.includes(idx) : existingQ.correctIndex === idx
-                    }));
-                } else {
-                    syncDraftOptionsFromDOM(isComplex);
-                }
-
-                area.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700">${isComplex ? 'Pilihan Jawaban Kompleks (Centang ≥1 Kunci Benar):' : 'Pilihan Jawaban (Pilih 1 Kunci Benar):'}</span>
-                    </div>
-                    <div id="draft-options-rows" class="space-y-2"></div>
-                    <button type="button" onclick="addDraftOptionRow()" class="w-full py-1.5 px-3 rounded-xl border border-dashed border-blue-400 text-blue-700 hover:bg-blue-50 text-xs font-bold flex items-center justify-center gap-1">
-                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                        <span>Tambah Opsi (E, F...)</span>
-                    </button>
-                `;
-                renderDraftOptionRows(isComplex);
-            } else if (type === 'true_false') {
-                if (existingQ && Array.isArray(existingQ.tfStatements)) {
-                    draftTfStatements = existingQ.tfStatements.map(s => ({ text: s.text || '', isTrue: Boolean(s.isTrue) }));
-                }
-                area.innerHTML = `
-                    <div class="text-[11px] font-bold text-slate-700 mb-1">Daftar Pernyataan &amp; Kunci (Benar / Salah):</div>
-                    <div id="draft-tf-rows" class="space-y-2"></div>
-                    <button type="button" onclick="addDraftTfRow()" class="w-full py-1.5 px-3 rounded-xl border border-dashed border-teal-400 text-teal-800 hover:bg-teal-50 text-xs font-bold flex items-center justify-center gap-1 mt-1">
-                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                        <span>Tambah Baris Pernyataan</span>
-                    </button>
-                `;
-                renderDraftTfRows();
-            } else if (type === 'matching') {
-                if (existingQ && Array.isArray(existingQ.matchingRows)) {
-                    draftMatchingLeftHeader = existingQ.leftHeader || 'Unsur Seni Rupa';
-                    draftMatchingRightHeaders = Array.isArray(existingQ.rightHeaders) ? [...existingQ.rightHeaders] : [];
-                    draftMatchingRows = existingQ.matchingRows.map(r => ({
-                        leftText: r.leftText || '',
-                        correctColIndex: Number(r.correctColIndex) || 0
-                    }));
-                }
-                area.innerHTML = `<div id="draft-matching-builder" class="space-y-3"></div>`;
-                renderDraftMatchingBuilder();
-            } else if (type === 'short_answer') {
-                const ans = existingQ ? (existingQ.sampleAnswer || '') : '';
-                area.innerHTML = `
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Kunci Jawaban Singkat (Untuk Mode Kunci Jawaban):</label>
-                        <input type="text" id="q-sample-answer" value="${escapeAttr(ans)}" placeholder="Contoh: Naturalisme" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
-                    </div>
-                `;
-            } else if (type === 'essay') {
-                const ans = existingQ ? (existingQ.sampleAnswer || '') : '';
-                area.innerHTML = `
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Pedoman / Kunci Jawaban Uraian (Opsional):</label>
-                        <textarea id="q-sample-answer" rows="2" placeholder="Tulis kunci jawaban uraian..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">${escapeHTML(ans)}</textarea>
-                    </div>
-                `;
-            }
-            refreshIcons();
-        }
-
-        function syncDraftOptionsFromDOM(isComplex = false) {
-            const rows = document.querySelectorAll('#draft-options-rows [data-opt-row]');
+        function syncDraftOptionsFromDOM(isComplex) {
+            const rows = document.querySelectorAll('#q-options-rows [data-opt-row]');
             if (rows.length === 0) return;
-            const list = [];
+            const updated = [];
             rows.forEach(row => {
-                list.push({
-                    text: row.querySelector('.opt-text-in')?.value || '',
-                    image: row.querySelector('.opt-img-in')?.value || '',
-                    isCorrect: Boolean(row.querySelector('.opt-key-in')?.checked)
+                updated.push({
+                    text: row.querySelector('.opt-text')?.value || '',
+                    image: row.querySelector('.opt-img')?.value || '',
+                    isCorrect: Boolean(row.querySelector('.opt-key')?.checked)
                 });
             });
-            if (!isComplex && !list.some(o => o.isCorrect) && list.length > 0) list[0].isCorrect = true;
-            draftOptions = list;
-        }
-
-        function renderDraftOptionRows(isComplex = null) {
-            const container = document.getElementById('draft-options-rows');
-            if (!container) return;
-            if (isComplex === null) isComplex = document.getElementById('q-type').value === 'complex_mc';
-            const canDelete = draftOptions.length > 2;
-
-            container.innerHTML = draftOptions.map((opt, idx) => {
-                const letter = String.fromCharCode(65 + idx);
-                return `
-                    <div data-opt-row="${idx}" class="p-2 rounded-xl bg-white border border-slate-200 space-y-1.5">
-                        <div class="flex items-center gap-1.5">
-                            <input type="${isComplex ? 'checkbox' : 'radio'}" name="draft-opt-correct" ${opt.isCorrect ? 'checked' : ''}
-                                onchange="syncDraftOptionsFromDOM(${isComplex})" class="opt-key-in w-4 h-4 accent-blue-600 cursor-pointer shrink-0" title="Tandai sebagai kunci jawaban">
-                            <span class="text-xs font-extrabold text-slate-700 w-4 shrink-0">${letter}.</span>
-                            <input type="text" value="${escapeAttr(opt.text)}" oninput="if(draftOptions[${idx}]) draftOptions[${idx}].text = this.value" placeholder="Teks opsi ${letter}" class="opt-text-in flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">
-                            <label class="cursor-pointer px-2 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-[11px] font-bold shrink-0" title="Upload gambar opsi">
-                                +Img
-                                <input type="file" accept="image/*" class="hidden" onchange="handleOptionImageUpload(event, ${idx})">
-                            </label>
-                            <button type="button" onclick="removeDraftOptionRow(${idx})" ${!canDelete ? 'disabled' : ''} class="p-1 rounded-lg ${canDelete ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'text-slate-300'} shrink-0" title="Hapus opsi">
-                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                        <input type="text" value="${escapeAttr(opt.image)}" oninput="if(draftOptions[${idx}]) draftOptions[${idx}].image = this.value" placeholder="URL gambar opsi ${letter} (opsional)..." class="opt-img-in w-full px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] bg-slate-50">
-                        ${opt.image ? `<img src="${escapeAttr(opt.image)}" class="max-h-14 rounded-lg border border-slate-200 object-contain">` : ''}
-                    </div>
-                `;
-            }).join('');
-            refreshIcons();
+            if (!isComplex && !updated.some(o => o.isCorrect) && updated.length > 0) {
+                updated[0].isCorrect = true;
+            }
+            draftOptions = updated;
         }
 
         function addDraftOptionRow() {
@@ -2543,138 +2085,232 @@
             syncDraftOptionsFromDOM(isComplex);
             if (draftOptions.length <= 2) return;
             draftOptions.splice(idx, 1);
-            if (!isComplex && !draftOptions.some(o => o.isCorrect)) draftOptions[0].isCorrect = true;
+            if (!isComplex && !draftOptions.some(o => o.isCorrect)) {
+                draftOptions[0].isCorrect = true;
+            }
             renderDraftOptionRows(isComplex);
         }
 
-        function renderDraftTfRows() {
-            const container = document.getElementById('draft-tf-rows');
+        function renderDraftOptionRows(isComplex) {
+            const container = document.getElementById('q-options-rows');
             if (!container) return;
-            const canDelete = draftTfStatements.length > 1;
-            container.innerHTML = draftTfStatements.map((st, idx) => `
-                <div class="p-2 rounded-xl bg-white border border-slate-200 space-y-1.5">
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-xs font-extrabold text-slate-700 pt-1.5 w-4 shrink-0">${idx + 1}.</span>
-                        <textarea rows="2" oninput="if(draftTfStatements[${idx}]) draftTfStatements[${idx}].text = this.value"
-                            placeholder="Tulis pernyataan ke-${idx + 1}..." class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs">${escapeHTML(st.text)}</textarea>
-                        <button type="button" onclick="removeDraftTfRow(${idx})" ${!canDelete ? 'disabled' : ''} class="p-1 rounded-lg ${canDelete ? 'bg-rose-50 text-rose-600' : 'text-slate-300'} shrink-0">
-                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                        </button>
+            const canDelete = draftOptions.length > 2;
+
+            container.innerHTML = draftOptions.map((opt, idx) => {
+                const letter = getOptionLetter(idx);
+                return `
+                    <div data-opt-row="${idx}" class="p-2 rounded-xl bg-white border border-slate-200 space-y-1.5">
+                        <div class="flex items-center gap-1.5">
+                            <input type="${isComplex ? 'checkbox' : 'radio'}" name="q-opt-correct" ${opt.isCorrect ? 'checked' : ''}
+                                onchange="syncDraftOptionsFromDOM(${isComplex})" class="opt-key w-4 h-4 accent-blue-600 cursor-pointer shrink-0">
+                            <span class="text-xs font-extrabold text-slate-700 w-5 shrink-0">${letter}.</span>
+                            <input type="text" value="${escapeAttr(opt.text || '')}" oninput="if(draftOptions[${idx}]) draftOptions[${idx}].text = this.value"
+                                placeholder="Teks pilihan ${letter}" class="opt-text flex-1 px-2.5 py-1 rounded-lg border border-slate-300 text-xs">
+                            <label class="cursor-pointer px-2 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 text-[11px] font-bold shrink-0">
+                                +Img
+                                <input type="file" accept="image/*" class="hidden" onchange="handleOptionImageUpload(event, ${idx})">
+                            </label>
+                            <button type="button" onclick="removeDraftOptionRow(${idx})" ${!canDelete ? 'disabled' : ''}
+                                class="p-1 rounded-lg ${canDelete ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-slate-100 text-slate-300'} shrink-0">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                        <div class="pl-7">
+                            <input type="text" value="${escapeAttr(opt.image || '')}" oninput="if(draftOptions[${idx}]) draftOptions[${idx}].image = this.value"
+                                placeholder="URL gambar opsi ${letter} (opsional)..." class="opt-img w-full px-2 py-1 rounded-lg border border-slate-200 text-[11px] bg-slate-50">
+                        </div>
+                        ${opt.image ? `<div class="pl-7"><img src="${escapeAttr(opt.image)}" class="max-h-14 rounded-lg border border-slate-200 object-contain"></div>` : ''}
                     </div>
-                    <div class="flex items-center gap-3 pl-5 text-xs">
-                        <span class="text-[11px] font-bold text-slate-500">Kunci:</span>
-                        <label class="flex items-center gap-1 cursor-pointer font-bold text-emerald-700">
-                            <input type="radio" name="tf-key-${idx}" ${st.isTrue ? 'checked' : ''} onchange="draftTfStatements[${idx}].isTrue = true" class="accent-emerald-600">
-                            <span>Benar</span>
-                        </label>
-                        <label class="flex items-center gap-1 cursor-pointer font-bold text-rose-700">
-                            <input type="radio" name="tf-key-${idx}" ${!st.isTrue ? 'checked' : ''} onchange="draftTfStatements[${idx}].isTrue = false" class="accent-rose-600">
-                            <span>Salah</span>
-                        </label>
-                    </div>
+                `;
+            }).join('');
+            refreshIcons();
+        }
+
+        // Builder Tabel Benar/Salah
+        function addDraftTfRow() {
+            draftTfRows.push({ statement: '', isTrue: true });
+            renderDraftTfRows();
+        }
+        function removeDraftTfRow(idx) {
+            if (draftTfRows.length <= 1) return;
+            draftTfRows.splice(idx, 1);
+            renderDraftTfRows();
+        }
+        function renderDraftTfRows() {
+            const box = document.getElementById('q-tf-rows-container');
+            if (!box) return;
+            box.innerHTML = draftTfRows.map((r, idx) => `
+                <div class="p-2 rounded-xl bg-white border border-slate-200 flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500 w-5">${idx + 1}.</span>
+                    <input type="text" value="${escapeAttr(r.statement)}" oninput="if(draftTfRows[${idx}]) draftTfRows[${idx}].statement = this.value"
+                        placeholder="Tulis pernyataan ke-${idx + 1}..." class="flex-1 px-2.5 py-1 rounded-lg border border-slate-300 text-xs">
+                    <select onchange="if(draftTfRows[${idx}]) draftTfRows[${idx}].isTrue = (this.value === 'true')" class="px-2 py-1 rounded-lg border border-slate-300 text-xs font-bold bg-slate-50">
+                        <option value="true" ${r.isTrue ? 'selected' : ''}>Benar</option>
+                        <option value="false" ${!r.isTrue ? 'selected' : ''}>Salah</option>
+                    </select>
+                    <button type="button" onclick="removeDraftTfRow(${idx})" ${draftTfRows.length <= 1 ? 'disabled' : ''} class="p-1 rounded bg-rose-50 text-rose-600 disabled:opacity-30"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                 </div>
             `).join('');
             refreshIcons();
         }
 
-        function addDraftTfRow() {
-            draftTfStatements.push({ text: '', isTrue: true });
-            renderDraftTfRows();
-        }
-
-        function removeDraftTfRow(idx) {
-            if (draftTfStatements.length <= 1) return;
-            draftTfStatements.splice(idx, 1);
-            renderDraftTfRows();
-        }
-
-        function renderDraftMatchingBuilder() {
-            const container = document.getElementById('draft-matching-builder');
-            if (!container) return;
-
-            const canDelCol = draftMatchingRightHeaders.length > 2;
-            const canDelRow = draftMatchingRows.length > 1;
-
-            container.innerHTML = `
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-700 mb-1">Judul Kolom Kiri (Kategori Item):</label>
-                    <input type="text" value="${escapeAttr(draftMatchingLeftHeader)}" oninput="draftMatchingLeftHeader = this.value"
-                        placeholder="Contoh: Unsur Seni Rupa" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold bg-white">
-                </div>
-
-                <div class="space-y-1.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700">Header Kolom Pasangan Kanan (${draftMatchingRightHeaders.length} Kolom):</span>
-                        <button type="button" onclick="addMatchingRightCol()" class="px-2 py-0.5 rounded-md bg-blue-100 hover:bg-blue-200 text-blue-800 text-[11px] font-bold">+ Kolom</button>
-                    </div>
-                    ${draftMatchingRightHeaders.map((colText, cIdx) => `
-                        <div class="flex items-start gap-1.5 bg-white p-2 rounded-xl border border-slate-200">
-                            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white text-[10px] font-bold shrink-0 mt-0.5">K${cIdx + 1}</span>
-                            <textarea rows="2" oninput="draftMatchingRightHeaders[${cIdx}] = this.value"
-                                placeholder="Isi teks header kolom ${cIdx + 1}..." class="flex-1 px-2 py-1 rounded border border-slate-300 text-xs">${escapeHTML(colText)}</textarea>
-                            <button type="button" onclick="removeMatchingRightCol(${cIdx})" ${!canDelCol ? 'disabled' : ''} class="p-1 rounded ${canDelCol ? 'bg-rose-50 text-rose-600' : 'text-slate-300'} shrink-0">
-                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div class="space-y-1.5 pt-1 border-t border-slate-200">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700">Baris Item Kiri &amp; Kunci Kolom Pasangan:</span>
-                        <button type="button" onclick="addMatchingLeftRow()" class="px-2 py-0.5 rounded-md bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold">+ Baris</button>
-                    </div>
-                    ${draftMatchingRows.map((row, rIdx) => `
-                        <div class="bg-white p-2 rounded-xl border border-slate-200 space-y-1.5">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-xs font-extrabold text-slate-700 w-4 shrink-0">${rIdx + 1}.</span>
-                                <input type="text" value="${escapeAttr(row.leftText)}" oninput="draftMatchingRows[${rIdx}].leftText = this.value"
-                                    placeholder="Contoh: Gelap Terang (Arsir)" class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold">
-                                <button type="button" onclick="removeMatchingLeftRow(${rIdx})" ${!canDelRow ? 'disabled' : ''} class="p-1 rounded ${canDelRow ? 'bg-rose-50 text-rose-600' : 'text-slate-300'} shrink-0">
-                                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                                </button>
-                            </div>
-                            <div class="flex items-center gap-2 pl-5">
-                                <span class="text-[11px] font-bold text-slate-500">Kunci Centang (✓) di:</span>
-                                <select onchange="draftMatchingRows[${rIdx}].correctColIndex = parseInt(this.value, 10)" class="px-2 py-1 rounded-lg border border-slate-300 text-[11px] font-bold bg-amber-50 text-amber-950">
-                                    ${draftMatchingRightHeaders.map((_, cIdx) => `
-                                        <option value="${cIdx}" ${Number(row.correctColIndex) === cIdx ? 'selected' : ''}>Kolom K${cIdx + 1}</option>
-                                    `).join('')}
-                                </select>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            refreshIcons();
-        }
-
-        function addMatchingRightCol() {
-            if (draftMatchingRightHeaders.length >= 6) return;
-            draftMatchingRightHeaders.push(`Deskripsi pasangan kolom ${draftMatchingRightHeaders.length + 1}`);
+        // Builder Matriks Menjodohkan
+        function addDraftMatchCol() {
+            if (draftMatchCols.length >= 6) return;
+            draftMatchCols.push(`Deskripsi pasangan kolom ${draftMatchCols.length + 1}`);
             renderDraftMatchingBuilder();
         }
-
-        function removeMatchingRightCol(cIdx) {
-            if (draftMatchingRightHeaders.length <= 2) return;
-            draftMatchingRightHeaders.splice(cIdx, 1);
-            draftMatchingRows.forEach(r => {
-                if (r.correctColIndex >= draftMatchingRightHeaders.length) {
-                    r.correctColIndex = draftMatchingRightHeaders.length - 1;
-                }
+        function removeDraftMatchCol(idx) {
+            if (draftMatchCols.length <= 2) return;
+            draftMatchCols.splice(idx, 1);
+            draftMatchRows.forEach(r => {
+                if (r.correctCol >= draftMatchCols.length) r.correctCol = 0;
             });
             renderDraftMatchingBuilder();
         }
-
-        function addMatchingLeftRow() {
-            draftMatchingRows.push({ leftText: '', correctColIndex: 0 });
+        function addDraftMatchRow() {
+            draftMatchRows.push({ left: '', correctCol: 0 });
             renderDraftMatchingBuilder();
         }
-
-        function removeMatchingLeftRow(rIdx) {
-            if (draftMatchingRows.length <= 1) return;
-            draftMatchingRows.splice(rIdx, 1);
+        function removeDraftMatchRow(idx) {
+            if (draftMatchRows.length <= 1) return;
+            draftMatchRows.splice(idx, 1);
             renderDraftMatchingBuilder();
+        }
+        function renderDraftMatchingBuilder() {
+            const colsBox = document.getElementById('q-match-cols-container');
+            const rowsBox = document.getElementById('q-match-rows-container');
+            if (!colsBox || !rowsBox) return;
+
+            colsBox.innerHTML = draftMatchCols.map((colText, cIdx) => `
+                <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-1 rounded bg-emerald-100 text-emerald-900 text-[11px] font-extrabold shrink-0">Kolom ${cIdx + 1}</span>
+                    <input type="text" value="${escapeAttr(colText)}" oninput="draftMatchCols[${cIdx}] = this.value; renderDraftMatchingBuilderRowsOnly();"
+                        placeholder="Header pasangan atas kolom ${cIdx + 1}..." class="flex-1 px-2.5 py-1 rounded-lg border border-slate-300 text-xs bg-white">
+                    <button type="button" onclick="removeDraftMatchCol(${cIdx})" ${draftMatchCols.length <= 2 ? 'disabled' : ''} class="p-1 rounded bg-rose-50 text-rose-600 disabled:opacity-30"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                </div>
+            `).join('');
+
+            renderDraftMatchingBuilderRowsOnly();
+            refreshIcons();
+        }
+
+        function renderDraftMatchingBuilderRowsOnly() {
+            const rowsBox = document.getElementById('q-match-rows-container');
+            if (!rowsBox) return;
+            rowsBox.innerHTML = draftMatchRows.map((rowObj, rIdx) => `
+                <div class="p-2 rounded-xl bg-white border border-slate-200 flex flex-wrap items-center gap-1.5">
+                    <span class="text-xs font-extrabold text-slate-600 w-5">${rIdx + 1}.</span>
+                    <input type="text" value="${escapeAttr(rowObj.left)}" oninput="if(draftMatchRows[${rIdx}]) draftMatchRows[${rIdx}].left = this.value"
+                        placeholder="Item baris kiri ke-${rIdx + 1}..." class="flex-1 min-w-[120px] px-2.5 py-1 rounded-lg border border-slate-300 text-xs">
+                    <select onchange="if(draftMatchRows[${rIdx}]) draftMatchRows[${rIdx}].correctCol = parseInt(this.value, 10)"
+                        class="px-2 py-1 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-950 text-[11px] font-bold">
+                        ${draftMatchCols.map((_, cIdx) => `<option value="${cIdx}" ${rowObj.correctCol === cIdx ? 'selected' : ''}>Kunci: Kolom ${cIdx + 1}</option>`).join('')}
+                    </select>
+                    <button type="button" onclick="removeDraftMatchRow(${rIdx})" ${draftMatchRows.length <= 1 ? 'disabled' : ''} class="p-1 rounded bg-rose-50 text-rose-600 disabled:opacity-30"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                </div>
+            `).join('');
+            refreshIcons();
+        }
+
+        function renderOptionBuilderFields(existingQ = null) {
+            const type = existingQ ? existingQ.type : document.getElementById('q-type').value;
+            const area = document.getElementById('q-dynamic-options-area');
+            const essayWrap = document.getElementById('q-essay-lines-wrap');
+            if (!area) return;
+
+            if (essayWrap) essayWrap.classList.toggle('hidden', type !== 'essay');
+
+            if (type === 'multiple_choice' || type === 'complex_mc') {
+                const isComplex = type === 'complex_mc';
+                if (existingQ && Array.isArray(existingQ.options)) {
+                    const imgs = Array.isArray(existingQ.optionImages) ? existingQ.optionImages : [];
+                    draftOptions = existingQ.options.map((txt, idx) => ({
+                        text: txt || '',
+                        image: imgs[idx] || '',
+                        isCorrect: isComplex
+                            ? (Array.isArray(existingQ.correctIndices) && existingQ.correctIndices.includes(idx))
+                            : existingQ.correctIndex === idx
+                    }));
+                } else {
+                    syncDraftOptionsFromDOM(isComplex);
+                }
+
+                area.innerHTML = `
+                    <div class="text-[11px] font-bold text-slate-700">${isComplex ? 'Opsi Pilihan Ganda Kompleks (Centang semua kunci benar):' : 'Opsi Pilihan Ganda (Pilih 1 kunci benar):'}</div>
+                    <div id="q-options-rows" class="space-y-2"></div>
+                    <button type="button" onclick="addDraftOptionRow()" class="w-full py-2 rounded-xl border-2 border-dashed border-blue-300 text-blue-700 hover:bg-blue-50 text-xs font-extrabold flex items-center justify-center gap-1">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>Tambah Opsi Jawaban (E, F, dst.)</span>
+                    </button>
+                `;
+                renderDraftOptionRows(isComplex);
+            } else if (type === 'true_false') {
+                if (existingQ && Array.isArray(existingQ.statements)) {
+                    draftTfRows = existingQ.statements.map(s => ({ statement: s.statement || '', isTrue: Boolean(s.isTrue) }));
+                }
+                area.innerHTML = `
+                    <div class="text-[11px] font-bold text-teal-900">Daftar Pernyataan Tabel Benar / Salah:</div>
+                    <div id="q-tf-rows-container" class="space-y-2"></div>
+                    <button type="button" onclick="addDraftTfRow()" class="w-full py-2 rounded-xl border-2 border-dashed border-teal-300 text-teal-800 hover:bg-teal-50 text-xs font-extrabold flex items-center justify-center gap-1">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>Tambah Baris Pernyataan</span>
+                    </button>
+                `;
+                renderDraftTfRows();
+            } else if (type === 'matching') {
+                const leftHeaderVal = existingQ && existingQ.leftHeader ? existingQ.leftHeader : 'Pernyataan / Unsur';
+                if (existingQ && Array.isArray(existingQ.colHeaders)) {
+                    draftMatchCols = [...existingQ.colHeaders];
+                }
+                if (existingQ && Array.isArray(existingQ.rows)) {
+                    draftMatchRows = existingQ.rows.map(r => ({ left: r.left || '', correctCol: Number(r.correctCol) || 0 }));
+                }
+
+                area.innerHTML = `
+                    <div>
+                        <label class="block text-[11px] font-bold text-emerald-900 mb-1">Judul Kolom Kiri Tabel *</label>
+                        <input type="text" id="q-match-left-header" value="${escapeAttr(leftHeaderVal)}" placeholder="Contoh: Unsur Seni Rupa" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold bg-white">
+                    </div>
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold text-emerald-900">Header Pasangan Atas (Kolom):</span>
+                            <button type="button" onclick="addDraftMatchCol()" class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold">+ Kolom</button>
+                        </div>
+                        <div id="q-match-cols-container" class="space-y-1.5"></div>
+                    </div>
+                    <div class="space-y-1.5 pt-1 border-t border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold text-emerald-900">Baris Item Kiri &amp; Kunci Kolom:</span>
+                            <button type="button" onclick="addDraftMatchRow()" class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold">+ Baris</button>
+                        </div>
+                        <div id="q-match-rows-container" class="space-y-1.5"></div>
+                    </div>
+                `;
+                renderDraftMatchingBuilder();
+            } else if (type === 'short_answer') {
+                const ansVal = existingQ && existingQ.shortAnswerKey ? existingQ.shortAnswerKey : '';
+                const showLines = existingQ ? (existingQ.showShortLines !== false) : true;
+                area.innerHTML = `
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Kunci Jawaban Singkat (Ditampilkan saat Mode Kunci aktif)</label>
+                        <input type="text" id="q-short-key" value="${escapeAttr(ansVal)}" placeholder="Contoh: Garis" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white">
+                    </div>
+                    <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                        <input type="checkbox" id="q-short-lines" ${showLines ? 'checked' : ''} class="w-4 h-4 accent-blue-600">
+                        <span>Tampilkan titik-titik isian jawaban di bawah pertanyaan</span>
+                    </label>
+                `;
+            } else if (type === 'essay') {
+                const keyVal = existingQ && existingQ.essayKey ? existingQ.essayKey : '';
+                area.innerHTML = `
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Pedoman / Kunci Jawaban Uraian (Opsional)</label>
+                        <textarea id="q-essay-key" rows="2" placeholder="Tulis ringkasan kunci jawaban uraian (hanya tampil di Mode Kunci Jawaban)..." class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs bg-white">${escapeHTML(keyVal)}</textarea>
+                    </div>
+                `;
+            }
+            refreshIcons();
         }
 
         function handleSaveQuestion(e) {
@@ -2682,13 +2318,13 @@
             if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
 
             const editId = document.getElementById('q-edit-id').value;
-            const sectionId = document.getElementById('q-section-id').value;
+            const sectionId = document.getElementById('q-section-id').value || (appState.sections[0] && appState.sections[0].id);
             const type = document.getElementById('q-type').value;
             const text = document.getElementById('q-text').value.trim();
             const image = document.getElementById('q-image').value.trim();
             const explanation = document.getElementById('q-explanation').value.trim();
 
-            const item = {
+            const payload = {
                 id: editId || ('q-' + Date.now()),
                 sectionId,
                 type,
@@ -2700,37 +2336,41 @@
             if (type === 'multiple_choice' || type === 'complex_mc') {
                 const isComplex = type === 'complex_mc';
                 syncDraftOptionsFromDOM(isComplex);
-                item.options = draftOptions.map(o => o.text.trim());
-                item.optionImages = draftOptions.map(o => o.image.trim());
+                payload.options = draftOptions.map(o => o.text.trim());
+                payload.optionImages = draftOptions.map(o => o.image.trim());
                 if (isComplex) {
-                    item.correctIndices = draftOptions.map((o, i) => o.isCorrect ? i : -1).filter(i => i !== -1);
+                    payload.correctIndices = draftOptions.map((o, i) => o.isCorrect ? i : -1).filter(i => i !== -1);
                 } else {
-                    const cIdx = draftOptions.findIndex(o => o.isCorrect);
-                    item.correctIndex = cIdx >= 0 ? cIdx : 0;
+                    const idx = draftOptions.findIndex(o => o.isCorrect);
+                    payload.correctIndex = idx >= 0 ? idx : 0;
                 }
             } else if (type === 'true_false') {
-                item.tfStatements = draftTfStatements.map(s => ({ text: s.text.trim(), isTrue: Boolean(s.isTrue) }));
+                payload.statements = draftTfRows.map(r => ({
+                    statement: r.statement.trim(),
+                    isTrue: Boolean(r.isTrue)
+                }));
             } else if (type === 'matching') {
-                item.leftHeader = draftMatchingLeftHeader.trim() || 'Pernyataan / Konsep';
-                item.rightHeaders = draftMatchingRightHeaders.map(h => h.trim());
-                item.matchingRows = draftMatchingRows.map(r => ({
-                    leftText: r.leftText.trim(),
-                    correctColIndex: Number(r.correctColIndex) || 0
+                payload.leftHeader = (document.getElementById('q-match-left-header')?.value || 'Pernyataan').trim();
+                payload.colHeaders = draftMatchCols.map(c => c.trim());
+                payload.rows = draftMatchRows.map(r => ({
+                    left: r.left.trim(),
+                    correctCol: Number(r.correctCol) || 0
                 }));
             } else if (type === 'short_answer') {
-                item.sampleAnswer = (document.getElementById('q-sample-answer')?.value || '').trim();
+                payload.shortAnswerKey = (document.getElementById('q-short-key')?.value || '').trim();
+                payload.showShortLines = Boolean(document.getElementById('q-short-lines')?.checked);
             } else if (type === 'essay') {
-                item.essayLines = parseInt(document.getElementById('q-essay-lines').value, 10) || 0;
-                item.sampleAnswer = (document.getElementById('q-sample-answer')?.value || '').trim();
+                payload.essayLines = parseInt(document.getElementById('q-essay-lines')?.value || '3', 10);
+                payload.essayKey = (document.getElementById('q-essay-key')?.value || '').trim();
             }
 
             if (editId) {
                 const idx = appState.questions.findIndex(q => q.id === editId);
-                if (idx !== -1) appState.questions[idx] = item;
-                showToast('Perubahan soal berhasil disimpan.', 'success');
+                if (idx !== -1) appState.questions[idx] = payload;
+                showToast('Perubahan soal berhasil disimpan!', 'success');
             } else {
-                appState.questions.push(item);
-                showToast('Butir soal ditambahkan ke lembar cetak.', 'success');
+                appState.questions.push(payload);
+                showToast('Butir soal baru ditambahkan ke lembar soal!', 'success');
             }
 
             saveState();
@@ -2740,7 +2380,7 @@
         }
 
         function startEditQuestion(id) {
-            if (!currentUser || currentUser.role !== 'GURU') return;
+            if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
             const q = appState.questions.find(item => item.id === id);
             if (!q) return;
 
@@ -2762,11 +2402,13 @@
             document.getElementById('q-submit-btn').innerHTML = `<i data-lucide="save" class="w-4 h-4"></i><span>Simpan Perubahan Soal</span>`;
             refreshIcons();
 
-            document.getElementById('editor-pane').scrollTo({ top: 620, behavior: 'smooth' });
+            const editorPane = document.getElementById('editor-pane');
+            if (editorPane) editorPane.scrollTo({ top: 620, behavior: 'smooth' });
         }
 
         function resetQuestionForm() {
-            const keepSection = document.getElementById('q-section-id').value;
+            const secEl = document.getElementById('q-section-id');
+            const keepSection = secEl ? secEl.value : '';
             document.getElementById('q-edit-id').value = '';
             document.getElementById('q-text').value = '';
             document.getElementById('q-image').value = '';
@@ -2779,8 +2421,22 @@
                 { text: '', image: '', isCorrect: false },
                 { text: '', image: '', isCorrect: false }
             ];
+            draftTfRows = [
+                { statement: '', isTrue: true },
+                { statement: '', isTrue: false }
+            ];
+            draftMatchCols = [
+                'Deskripsi pasangan kolom 1',
+                'Deskripsi pasangan kolom 2',
+                'Deskripsi pasangan kolom 3'
+            ];
+            draftMatchRows = [
+                { left: '', correctCol: 0 },
+                { left: '', correctCol: 1 },
+                { left: '', correctCol: 2 }
+            ];
 
-            if (keepSection) document.getElementById('q-section-id').value = keepSection;
+            if (keepSection && secEl) secEl.value = keepSection;
             document.getElementById('q-form-heading').innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4 text-blue-600"></i><span>4. Tambah Butir Soal Baru</span>`;
             document.getElementById('q-cancel-edit-btn').classList.add('hidden');
             document.getElementById('q-submit-btn').innerHTML = `<i data-lucide="plus" class="w-4 h-4"></i><span>Tambahkan ke Lembar Soal</span>`;
@@ -2789,13 +2445,274 @@
         }
 
         // =====================================================================
+        // 6. RENDER PRATINJAU KERTAS A4 / F4 / PDF
+        // =====================================================================
+        function renderPrintableSheet() {
+            if (!appState) return;
+            const sheetEl = document.getElementById('printable-sheet');
+            const paperLabel = document.getElementById('preview-paper-label');
+            const modePill = document.getElementById('preview-mode-pill');
+
+            if (paperLabel) {
+                paperLabel.textContent = `Kertas ${appState.layout.paper === 'f4' ? 'F4' : 'A4'} • ${appState.layout.fontSize || '12pt'}`;
+            }
+            if (modePill) {
+                if (appState.layout.showAnswerKey) {
+                    modePill.textContent = 'Pegangan Guru & Kunci Jawaban';
+                    modePill.className = 'px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[11px]';
+                } else {
+                    modePill.textContent = 'Lembar Soal Siswa';
+                    modePill.className = 'px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold text-[11px]';
+                }
+            }
+
+            renderDocumentIntoElement(sheetEl, appState);
+        }
+
+        function renderDocumentIntoElement(sheetEl, docData) {
+            if (!sheetEl || !docData) return;
+            sheetEl.className = `paper-sheet exam-paper-font ${docData.layout.paper === 'f4' ? 'paper-f4' : 'paper-a4'}`;
+            sheetEl.style.fontSize = docData.layout.fontSize || '12pt';
+
+            const m = docData.meta;
+            const showKey = Boolean(docData.layout.showAnswerKey);
+            const dots = m.showStudentDots ? '........................................' : '';
+            const keyBanner = showKey
+                ? `<div style="margin-bottom: 8px; text-align: center;"><span style="border: 1.5px solid #000; padding: 2px 10px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px;">PEGANGAN GURU &amp; KUNCI JAWABAN</span></div>`
+                : '';
+
+            let html = `
+                <div class="no-break" style="margin-bottom: 12px;">
+                    ${keyBanner}
+                    <div style="text-align: center; line-height: 1.3; margin-bottom: 10px;">
+                        <div style="font-weight: bold; font-size: 1.15em; text-transform: uppercase;">${escapeHTML(m.line1)}</div>
+                        <div style="font-weight: bold; font-size: 1.15em; text-transform: uppercase;">${escapeHTML(m.line2)}</div>
+                        <div style="font-style: italic; font-size: 1.05em;">${escapeHTML(m.line3)}</div>
+                    </div>
+
+                    <table style="width: 100%; border-collapse: collapse; font-weight: bold; line-height: 1.45;">
+                        <tr>
+                            <td style="width: 22%; vertical-align: top;">Mata Pelajaran</td>
+                            <td style="width: 2%; vertical-align: top;">:</td>
+                            <td style="width: 34%; vertical-align: top;">${escapeHTML(m.subject)}</td>
+                            <td style="width: 15%; vertical-align: top;">Nama</td>
+                            <td style="width: 2%; vertical-align: top;">:</td>
+                            <td style="width: 25%; vertical-align: top; font-weight: normal;">${dots}</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Kelas</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top;">${escapeHTML(m.className)}</td>
+                            <td style="vertical-align: top;">Kelas</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; font-weight: normal;">${dots}</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Hari/Tanggal</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; font-weight: normal;">${m.date ? escapeHTML(m.date) : dots}</td>
+                            <td style="vertical-align: top;">No. Absen</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; font-weight: normal;">${dots}</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Alokasi Waktu</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; font-weight: normal;">${m.duration ? escapeHTML(m.duration) : dots}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+
+            if (m.showInstructions && m.instructions) {
+                html += `
+                    <div class="no-break" style="border: 1px solid #000; padding: 6px 10px; margin-bottom: 12px; font-size: 0.92em; white-space: pre-line;">
+                        <strong>PETUNJUK UMUM:</strong>\n${escapeHTML(m.instructions)}
+                    </div>
+                `;
+            }
+
+            const sections = Array.isArray(docData.sections) ? docData.sections : [];
+            const questions = Array.isArray(docData.questions) ? docData.questions : [];
+
+            sections.forEach((sec, sIdx) => {
+                const roman = ROMAN_NUMERALS[sIdx] || String(sIdx + 1);
+                const secQuestions = questions.filter(q => q.sectionId === sec.id);
+
+                html += `
+                    <div style="margin-top: ${sIdx === 0 ? '4px' : '14px'};">
+                        <div class="no-break" style="font-weight: bold; margin-bottom: 8px; display: flex; gap: 6px;">
+                            <span style="min-width: 24px;">${roman}.</span>
+                            <span>${escapeHTML(sec.instruction)}</span>
+                        </div>
+                `;
+
+                if (secQuestions.length === 0) {
+                    html += `<div style="padding-left: 24px; color: #888; font-style: italic; font-size: 0.9em;">(Belum ada butir soal pada bagian ini)</div>`;
+                } else {
+                    secQuestions.forEach((q, qIdx) => {
+                        html += renderSingleQuestionPrintHTML(q, qIdx + 1, docData.layout, showKey);
+                    });
+                }
+
+                html += `</div>`;
+            });
+
+            sheetEl.innerHTML = html;
+        }
+
+        function renderSingleQuestionPrintHTML(q, num, layout, showKey) {
+            const imgBlock = q.image
+                ? `<div style="margin: 6px 0;"><img src="${escapeAttr(q.image)}" style="max-height: 170px; max-width: 100%; border: 1px solid #ccc; padding: 2px;"></div>`
+                : '';
+
+            let bodyBlock = '';
+
+            if (q.type === 'multiple_choice' || q.type === 'complex_mc') {
+                const isComplex = q.type === 'complex_mc';
+                const opts = Array.isArray(q.options) ? q.options : [];
+                const optImgs = Array.isArray(q.optionImages) ? q.optionImages : [];
+                const hasOptImg = optImgs.some(Boolean);
+                const maxOptLen = opts.reduce((mx, str) => Math.max(mx, (str || '').length), 0);
+
+                let useTwoCols = false;
+                if (layout.optionCols === '2') useTwoCols = true;
+                else if (layout.optionCols === 'auto' && !hasOptImg && maxOptLen <= 24 && opts.length <= 6) useTwoCols = true;
+
+                const optItemsHTML = opts.map((optText, idx) => {
+                    const letter = getOptionLetter(idx);
+                    const isKey = isComplex
+                        ? (Array.isArray(q.correctIndices) && q.correctIndices.includes(idx))
+                        : q.correctIndex === idx;
+
+                    const prefix = isComplex
+                        ? (showKey && isKey ? '☑' : '☐')
+                        : `${letter}.`;
+
+                    const highlightStyle = (showKey && isKey)
+                        ? 'font-weight: bold; text-decoration: underline;'
+                        : '';
+
+                    return `
+                        <div style="display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; ${highlightStyle}">
+                            <span style="min-width: 20px;">${prefix}</span>
+                            <div style="flex: 1;">
+                                ${isComplex ? `<span>${letter}. </span>` : ''}
+                                <span>${escapeHTML(optText)}</span>
+                                ${optImgs[idx] ? `<div style="margin-top: 3px;"><img src="${escapeAttr(optImgs[idx])}" style="max-height: 95px; border: 1px solid #ddd;"></div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                if (useTwoCols) {
+                    bodyBlock = `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; margin-top: 4px;">${optItemsHTML}</div>`;
+                } else {
+                    bodyBlock = `<div style="margin-top: 4px;">${optItemsHTML}</div>`;
+                }
+            } else if (q.type === 'true_false') {
+                const stmts = Array.isArray(q.statements) ? q.statements : [];
+                bodyBlock = `
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.96em;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #000; padding: 4px 6px; width: 36px; text-align: center;">No.</th>
+                                <th style="border: 1px solid #000; padding: 4px 8px; text-align: left;">Pernyataan</th>
+                                <th style="border: 1px solid #000; padding: 4px 8px; width: 72px; text-align: center;">Benar</th>
+                                <th style="border: 1px solid #000; padding: 4px 8px; width: 72px; text-align: center;">Salah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${stmts.map((s, idx) => `
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 4px 6px; text-align: center; font-weight: bold;">${idx + 1}.</td>
+                                    <td style="border: 1px solid #000; padding: 4px 8px;">${escapeHTML(s.statement)}</td>
+                                    <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-weight: bold;">${showKey && s.isTrue ? '√' : ''}</td>
+                                    <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-weight: bold;">${showKey && !s.isTrue ? '√' : ''}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (q.type === 'matching') {
+                const cols = Array.isArray(q.colHeaders) ? q.colHeaders : [];
+                const rows = Array.isArray(q.rows) ? q.rows : [];
+                const colWidthPct = cols.length > 0 ? Math.floor(72 / cols.length) : 24;
+
+                bodyBlock = `
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.96em;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #000; padding: 5px 6px; width: 34px; text-align: center;"></th>
+                                <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-weight: bold;">${escapeHTML(q.leftHeader || 'Pernyataan')}</th>
+                                ${cols.map(c => `<th style="border: 1px solid #000; padding: 5px 8px; width: ${colWidthPct}%; text-align: center; font-weight: bold; vertical-align: top;">${escapeHTML(c)}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows.map((r, rIdx) => `
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-weight: bold; vertical-align: top;">${rIdx + 1}.</td>
+                                    <td style="border: 1px solid #000; padding: 5px 8px; vertical-align: top;">${escapeHTML(r.left)}</td>
+                                    ${cols.map((_, cIdx) => `
+                                        <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-weight: bold; font-size: 1.1em;">
+                                            ${showKey && Number(r.correctCol) === cIdx ? '√' : ''}
+                                        </td>
+                                    `).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else if (q.type === 'short_answer') {
+                const dotsLine = q.showShortLines !== false
+                    ? `<div style="margin-top: 4px;">Jawab: ....................................................................................................................</div>`
+                    : '';
+                const keyLine = showKey && q.shortAnswerKey
+                    ? `<div style="margin-top: 3px; font-weight: bold;">Kunci Jawaban: ${escapeHTML(q.shortAnswerKey)}</div>`
+                    : '';
+                bodyBlock = dotsLine + keyLine;
+            } else if (q.type === 'essay') {
+                const lineCnt = Number(q.essayLines) || 0;
+                let linesHTML = '';
+                for (let i = 0; i < lineCnt; i++) {
+                    linesHTML += `<div style="border-bottom: 1px dotted #000; height: 22px; width: 100%;"></div>`;
+                }
+                const keyLine = showKey && q.essayKey
+                    ? `<div style="margin-top: 4px; font-weight: bold;">Pedoman Kunci: ${escapeHTML(q.essayKey)}</div>`
+                    : '';
+                bodyBlock = (linesHTML ? `<div style="margin-top: 4px;">${linesHTML}</div>` : '') + keyLine;
+            }
+
+            const expBlock = (showKey && q.explanation)
+                ? `<div style="margin-top: 4px; font-size: 0.9em; font-style: italic;">Catatan Kunci: ${escapeHTML(q.explanation)}</div>`
+                : '';
+
+            return `
+                <div class="no-break" style="padding-left: 24px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 6px;">
+                    <span style="min-width: 22px;">${num}.</span>
+                    <div style="flex: 1;">
+                        <div style="white-space: pre-line;">${escapeHTML(q.text)}</div>
+                        ${imgBlock}
+                        ${bodyBlock}
+                        ${expBlock}
+                    </div>
+                </div>
+            `;
+        }
+
+        // =====================================================================
         // 7. DAFTAR SOAL TERSIMPAN & UNGGAH GAMBAR
         // =====================================================================
         function renderSavedQuestionsList() {
             const listEl = document.getElementById('saved-questions-list');
             const countEl = document.getElementById('saved-q-count');
+            if (!listEl || !appState) return;
+
             const qs = appState.questions;
-            countEl.textContent = qs.length;
+            if (countEl) countEl.textContent = qs.length;
 
             if (qs.length === 0) {
                 listEl.innerHTML = `<div class="p-4 text-center text-xs text-slate-400 bg-white rounded-xl border border-dashed border-slate-300">Daftar soal masih kosong.</div>`;
@@ -2812,17 +2729,17 @@
             };
 
             listEl.innerHTML = qs.map((q, idx) => {
-                const meta = typeBadgeMap[q.type] || typeBadgeMap.multiple_choice;
                 const secIdx = appState.sections.findIndex(s => s.id === q.sectionId);
                 const roman = ROMAN_NUMERALS[secIdx >= 0 ? secIdx : 0] || 'I';
+                const badge = typeBadgeMap[q.type] || { label: q.type, cls: 'bg-slate-100 text-slate-700' };
 
                 return `
                     <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-start justify-between gap-2">
-                        <div class="space-y-1 min-w-0 flex-1">
+                        <div class="min-w-0 flex-1 space-y-1">
                             <div class="flex flex-wrap items-center gap-1.5">
-                                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white text-[10px] font-bold">Bag. ${roman}</span>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold ${meta.cls}">${meta.label}</span>
-                                ${q.image ? `<span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 text-[10px] font-bold">Gambar</span>` : ''}
+                                <span class="text-xs font-extrabold text-slate-900">#${idx + 1}</span>
+                                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white text-[10px] font-bold">Bagian ${roman}</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${badge.cls}">${badge.label}</span>
                             </div>
                             <p class="text-xs text-slate-700 line-clamp-2">${escapeHTML(q.text)}</p>
                         </div>
@@ -2850,6 +2767,7 @@
         }
 
         function moveQuestionOrder(idx, delta) {
+            if (!appState) return;
             const target = idx + delta;
             if (target < 0 || target >= appState.questions.length) return;
             const arr = appState.questions;
@@ -2860,6 +2778,7 @@
         }
 
         function duplicateQuestion(id) {
+            if (!appState) return;
             const idx = appState.questions.findIndex(q => q.id === id);
             if (idx === -1) return;
             const clone = JSON.parse(JSON.stringify(appState.questions[idx]));
@@ -2872,6 +2791,7 @@
         }
 
         function deleteQuestion(id) {
+            if (!appState) return;
             appState.questions = appState.questions.filter(q => q.id !== id);
             saveState();
             renderSavedQuestionsList();
@@ -2880,6 +2800,7 @@
         }
 
         function confirmClearAllQuestions() {
+            if (!appState) return;
             openConfirm({
                 title: 'Kosongkan Semua Butir Soal?',
                 subtitle: 'Identitas kop & bagian Romawi tetap dipertahankan',
@@ -2896,11 +2817,13 @@
         }
 
         function confirmResetToSample() {
+            if (!appState) return;
             openConfirm({
                 title: 'Isi Template Contoh Lengkap (PG, PGK, Menjodohkan & Esai)?',
                 subtitle: 'Mengisi folder aktif dengan contoh soal siap cetak',
                 body: 'Semua isi pada folder aktif akan diganti dengan template contoh SAT Seni Rupa Kelas 9.',
                 confirmText: 'Ya, Isi Contoh',
+                confirmColor: 'blue',
                 onConfirm: () => {
                     const keepId = appState.id;
                     const keepFolder = appState.folderName;
@@ -2998,76 +2921,6 @@
             }
         }
 
-        function handleKopImageUpload(event) {
-            const file = event.target.files && event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const maxDim = 1400;
-                    let w = img.width, h = img.height;
-                    if (w > maxDim || h > maxDim) {
-                        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
-                        else { w = Math.round((w * maxDim) / h); h = maxDim; }
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w;
-                    canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    const dataUrl = canvas.toDataURL('image/png');
-                    document.getElementById('meta-kop-image').value = dataUrl;
-                    updateMetaAndRender();
-                    showToast('Gambar kop surat berhasil dipasang!', 'success');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        }
-
-        function updateKopFromUrlInput() {
-            updateMetaAndRender();
-        }
-
-        function clearKopImage() {
-            document.getElementById('meta-kop-image').value = '';
-            updateMetaAndRender();
-            showToast('Gambar kop surat dihapus.', 'info');
-        }
-
-        function refreshKopPreviewBox() {
-            const val = (document.getElementById('meta-kop-image')?.value || '').trim();
-            const box = document.getElementById('meta-kop-preview-box');
-            const img = document.getElementById('meta-kop-preview-img');
-            if (!box || !img) return;
-            if (!val) {
-                box.classList.add('hidden');
-                img.src = '';
-            } else {
-                box.classList.remove('hidden');
-                img.src = val;
-            }
-        }
-
-        function applyKopToAllMyFolders() {
-            if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
-            const kopImg = appState.meta.kopImage || '';
-            const kopH = appState.meta.kopHeight || 135;
-            const kopFull = appState.meta.kopFullWidth !== false;
-            const kopBorder = Boolean(appState.meta.kopDoubleBorder);
-
-            guruDocuments.forEach(doc => {
-                doc.meta.kopImage = kopImg;
-                doc.meta.kopHeight = kopH;
-                doc.meta.kopFullWidth = kopFull;
-                doc.meta.kopDoubleBorder = kopBorder;
-            });
-
-            saveState();
-            showToast(`Kop surat berhasil diterapkan ke seluruh (${guruDocuments.length}) folder Anda!`, 'success');
-        }
-
         function exportDraftJSON() {
             if (!appState) return;
             const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
@@ -3082,7 +2935,7 @@
         }
 
         function importDraftJSON(event) {
-            if (!currentUser || currentUser.role !== 'GURU') return;
+            if (!currentUser || currentUser.role !== 'GURU' || !appState) return;
             const file = event.target.files && event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -3154,7 +3007,7 @@
             }
         }
 
-        // SINKRONISASI REALTIME ANTAR-TAB (BROADCASTCHANNEL + STORAGE EVENT)
+        // SINKRONISASI REALTIME ANTAR-TAB
         function handleRealtimeCrossTabSync() {
             initUsersStore();
             if (!currentUser) return;
@@ -3253,129 +3106,189 @@
             refreshIcons();
         });
     </script>
-    <!-- ===================================================================== -->
-    <!-- SCRIPT INTEGRASI GOOGLE SHEETS & REALTIME SYNC (CETAKSOAL PRO)        -->
+<!-- ===================================================================== -->
+    <!-- SCRIPT INTEGRASI SUPABASE CLOUD (CETAKSOAL PRO)                       -->
     <!-- ===================================================================== -->
     <script>
-        // GANTI URL DI BAWAH INI DENGAN URL WEB APP APPS SCRIPT ANDA (/exec)
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVOHEv49y3QAD5khkYBclc_UAk82s02-TojjVagSf8uBBjHpcHVvcR8w5knL0aG6gp/exec';
+        // GANTI DENGAN KREDENSIAL SUPABASE ANDA
+        const SUPABASE_URL = 'https://hkjxdbmhgopmfgbqxfvg.supabase.co/rest/v1/';
+        const SUPABASE_ANON_KEY = 'sb_publishable_b2R4iKsSfxi07XdQymXgcw_xydXfKN7';
 
-        let isSyncingCloud = false;
-        let pendingPushTimeout = null;
+        let supabaseClient = null;
+        try {
+            if (window.supabase && SUPABASE_URL && !SUPABASE_URL.includes('PASTE_')) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+        } catch (e) {
+            console.warn('Gagal menginisialisasi Supabase:', e);
+        }
+
+        let isSyncingSupabase = false;
+        let isPushingSupabase = false;
+        let pendingPushTimer = null;
         let pausePullUntil = 0;
 
-        // 1. Tarik Data dari Google Sheets ke Website
-        async function pullFromGoogleSheets(isInitial = false) {
-            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PASTE_URL')) return;
-            if (isSyncingCloud) return;
+        // 1. Tarik Data dari Supabase Cloud ke Website
+        async function pullFromSupabase(isInitial = false) {
+            if (!supabaseClient || isSyncingSupabase || isPushingSupabase) return;
             if (!isInitial && Date.now() < pausePullUntil) return;
 
             try {
-                isSyncingCloud = true;
-                const res = await fetch(APPS_SCRIPT_URL);
-                const json = await res.json();
+                isSyncingSupabase = true;
 
-                if (!isInitial && Date.now() < pausePullUntil) return;
+                // Ambil Users
+                const { data: usersData, error: uErr } = await supabaseClient.from('app_users').select('*');
+                if (!uErr && Array.isArray(usersData) && usersData.length > 0) {
+                    usersList = usersData.map(u => ({
+                        id: u.id,
+                        name: u.name,
+                        subject: u.subject || '',
+                        username: u.username,
+                        password: u.password,
+                        role: String(u.role || 'GURU').toUpperCase(),
+                        isMasterProctor: Boolean(u.is_master_proctor)
+                    }));
+                    if (!usersList.some(u => u && u.role === 'PROCTOR')) {
+                        usersList.unshift(JSON.parse(JSON.stringify(MASTER_PROCTOR)));
+                    }
+                    safeStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersList));
+                }
 
-                if (json.status === 'ok' && json.data) {
-                    if (Array.isArray(json.data.users) && json.data.users.length > 0) {
-                        usersList = json.data.users;
-                        if (!usersList.some(u => u && u.role === 'PROCTOR')) {
-                            usersList.unshift(JSON.parse(JSON.stringify(MASTER_PROCTOR)));
+                // Ambil DocsByUser
+                const { data: docsData, error: dErr } = await supabaseClient.from('app_docs_by_user').select('*');
+                if (!dErr && Array.isArray(docsData)) {
+                    const docsMap = {};
+                    docsData.forEach(row => {
+                        if (row.user_id && row.documents_json) {
+                            docsMap[row.user_id] = row.documents_json;
                         }
-                        saveUsersStore();
-                    }
+                    });
+                    safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(docsMap));
+                }
 
-                    if (json.data.docsByUser && typeof json.data.docsByUser === 'object') {
-                        safeStorage.setItem(STORAGE_KEYS.DOCS_BY_USER, JSON.stringify(json.data.docsByUser));
-                    }
+                // Ambil ProctorArchives
+                const { data: arcData, error: aErr } = await supabaseClient.from('app_proctor_archives').select('*').eq('id', 1).single();
+                if (!aErr && arcData && arcData.archives_json) {
+                    safeStorage.setItem(STORAGE_KEYS.PROCTOR_ARCHIVES, JSON.stringify(arcData.archives_json));
+                }
 
-                    if (Array.isArray(json.data.proctorArchives)) {
-                        safeStorage.setItem(STORAGE_KEYS.PROCTOR_ARCHIVES, JSON.stringify(json.data.proctorArchives));
-                    }
-
-                    if (!isInitial) {
-                        refreshActiveScreenAfterCloudSync();
-                    }
+                if (!isInitial && currentUser) {
+                    syncActiveViewFromServer();
                 }
             } catch (err) {
-                console.warn('Sinkronisasi cloud tertunda:', err);
+                console.warn('Sinkronisasi Supabase tertunda:', err);
             } finally {
-                isSyncingCloud = false;
+                isSyncingSupabase = false;
             }
         }
 
-        // 2. Kirim Perubahan dari Website ke Google Sheets
-        function pushToGoogleSheets() {
-            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PASTE_URL')) return;
+        // 2. Kirim Perubahan dari Website ke Supabase Cloud
+        function pushToSupabase(options = { syncUsers: false, syncDocs: false, syncArchives: false }) {
+            if (!supabaseClient) return;
 
-            pausePullUntil = Date.now() + 8000;
-            clearTimeout(pendingPushTimeout);
+            pausePullUntil = Date.now() + 10000;
+            clearTimeout(pendingPushTimer);
 
-            pendingPushTimeout = setTimeout(async () => {
+            pendingPushTimer = setTimeout(async () => {
+                isPushingSupabase = true;
+                pausePullUntil = Date.now() + 10000;
+
                 try {
-                    let docsMap = {};
-                    try {
+                    // Sync Users
+                    if (options.syncUsers && usersList.length > 0) {
+                        const rows = usersList.map(u => ({
+                            id: u.id,
+                            name: u.name,
+                            subject: u.subject || '',
+                            username: u.username,
+                            password: u.password,
+                            role: u.role || 'GURU',
+                            is_master_proctor: Boolean(u.isMasterProctor)
+                        }));
+                        await supabaseClient.from('app_users').upsert(rows);
+                    }
+
+                    // Sync Docs By User (Aktif)
+                    if (options.syncDocs && currentUser && currentUser.role === 'GURU' && appState) {
                         const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
-                        docsMap = rawMap ? JSON.parse(rawMap) : {};
-                    } catch (e) {}
+                        const docsMap = rawMap ? JSON.parse(rawMap) : {};
+                        const userDocs = docsMap[currentUser.id] || guruDocuments;
 
-                    let archivesList = [];
-                    try {
+                        await supabaseClient.from('app_docs_by_user').upsert({
+                            user_id: currentUser.id,
+                            documents_json: userDocs,
+                            updated_at: new Date().toISOString()
+                        });
+                    } else if (options.syncAllDocs) {
+                        const rawMap = safeStorage.getItem(STORAGE_KEYS.DOCS_BY_USER);
+                        const docsMap = rawMap ? JSON.parse(rawMap) : {};
+                        for (const userId in docsMap) {
+                            if (Object.prototype.hasOwnProperty.call(docsMap, userId)) {
+                                await supabaseClient.from('app_docs_by_user').upsert({
+                                    user_id: userId,
+                                    documents_json: docsMap[userId],
+                                    updated_at: new Date().toISOString()
+                                });
+                            }
+                        }
+                    }
+
+                    // Sync Proctor Archives
+                    if (options.syncArchives) {
                         const rawArc = safeStorage.getItem(STORAGE_KEYS.PROCTOR_ARCHIVES);
-                        archivesList = rawArc ? JSON.parse(rawArc) : [];
-                    } catch (e) {}
-
-                    await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({
-                            users: usersList,
-                            docsByUser: docsMap,
-                            proctorArchives: archivesList
-                        })
-                    });
+                        const archivesList = rawArc ? JSON.parse(rawArc) : [];
+                        await supabaseClient.from('app_proctor_archives').upsert({
+                            id: 1,
+                            archives_json: archivesList,
+                            updated_at: new Date().toISOString()
+                        });
+                    }
                 } catch (err) {
-                    console.error('Gagal mengirim data ke Google Sheets:', err);
+                    console.error('Gagal mengirim data ke Supabase:', err);
+                } finally {
+                    isPushingSupabase = false;
+                    pausePullUntil = Date.now() + 3000;
                 }
-            }, 800);
+            }, 600);
         }
 
-        // 3. Menimpa fungsi broadcastDataChange agar otomatis push ke Google Sheets
-        const originalBroadcastDataChange = broadcastDataChange;
-        broadcastDataChange = function(eventType) {
-            originalBroadcastDataChange(eventType);
-            pushToGoogleSheets();
+        // 3. Kaitkan fungsi simpan bawaan agar otomatis sinkron ke Supabase
+        const _origSaveState = saveState;
+        saveState = function() {
+            _origSaveState();
+            pushToSupabase({ syncDocs: true });
         };
 
-        // 4. Refresh tampilan setelah menarik data cloud terbaru
-        function refreshActiveScreenAfterCloudSync() {
+        const _origSaveUsersStore = saveUsersStore;
+        saveUsersStore = function() {
+            _origSaveUsersStore();
+            pushToSupabase({ syncUsers: true });
+        };
+
+        const _origSaveProctorArchives = saveProctorArchives;
+        saveProctorArchives = function() {
+            _origSaveProctorArchives();
+            pushToSupabase({ syncArchives: true, syncAllDocs: true });
+        };
+
+        function syncActiveViewFromServer() {
             if (!currentUser) return;
-            initUsersStore();
-
-            const refreshedMe = usersList.find(u => u.id === currentUser.id);
-            if (refreshedMe) {
-                currentUser = refreshedMe;
-            }
-
             if (currentUser.role === 'PROCTOR') {
                 loadProctorArchives();
                 renderProctorArchiveList();
                 renderTeachersList();
             } else if (currentUser.role === 'GURU') {
+                const activeTag = document.activeElement ? document.activeElement.tagName : '';
+                if (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT') return;
+
                 loadGuruDocuments();
                 renderGuruFolderControls();
-                syncInputsFromState();
-                renderSectionsEditor();
-                renderSavedQuestionsList();
-                renderPrintableSheet();
             }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            pullFromGoogleSheets(true);
-            setInterval(() => pullFromGoogleSheets(false), 8000);
+            pullFromSupabase(true);
+            setInterval(() => pullFromSupabase(false), 7000);
         });
     </script>
 </body>
